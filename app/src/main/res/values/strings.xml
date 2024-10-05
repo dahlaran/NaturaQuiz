@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">NaturaQuiz</string>
+
+
+    <!-- Errors -->
+    <string name="error_default">An Error Occurred</string>
+    <string name="error_no_network">No Network</string>
+    <string name="error_http_exception">Http Exception</string>
+    <string name="error_success">Success !</string>
+    <string name="error_no_content">Any content</string>
+    <string name="error_bad_request">Bad request</string>
+    <string name="error_unauthorized">Unauthorized</string>
+    <string name="error_forbidden">No Network</string>
+    <string name="error_payment_required">Need Payment</string>
+    <string name="error_no_found">No Found</string>
+    <string name="error_time_out">Time out</string>
+    <string name="no_video_is_available_at_the_moment">No video is available at the moment</string>
+    <string name="back">Return to previous page</string>
+</resources>

@@ -1,21 +1,28 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.dahlaran.naturaquiz"
     compileSdk = 34
 
+    val file = rootProject.file("local.properties")
+    val properties = Properties()
+    properties.load(file.inputStream())
     defaultConfig {
         applicationId = "com.dahlaran.naturaquiz"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        buildConfigField("String", "API_KEY", "\"${properties.getProperty("trefle.api.key")}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -33,23 +40,26 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/gradle/incremental.annotation.processors"
         }
     }
+
 }
 
 dependencies {
@@ -101,8 +111,7 @@ dependencies {
     // Room
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
-    // To use Kotlin annotation processing tool (kapt)
-    kapt("androidx.room:room-compiler:2.6.1")
+    ksp(libs.androidx.room.compiler)
 
     // Kotlin Extensions and Coroutines support for Room
     implementation(libs.androidx.room.ktx)

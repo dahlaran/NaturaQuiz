@@ -1,6 +1,5 @@
 package com.dahlaran.naturaquiz.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,6 +8,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
@@ -51,8 +51,18 @@ fun NaturaQuizTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
+        colorScheme = lightColorScheme(
+            primary = Color(0xFF2E7D32),
+            primaryContainer = Color(0xFF4CAF50),
+            secondary = Color(0xFF81C784),
+            background = Color(0xFFF1F8E9),
+            surface = Color(0xFFFFFFFF),
+            onPrimary = Color(0xFFFFFFFF),
+            onPrimaryContainer = Color(0xFFFFFFFF),
+            onSecondary = Color(0xFF000000),
+            onBackground = Color(0xFF000000),
+            onSurface = Color(0xFF000000)
+        ),
         content = content
     )
 }

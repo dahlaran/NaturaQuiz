@@ -1,4 +1,4 @@
-package com.dahlaran.naturaquiz.core
+package com.dahlaran.naturaquiz.core.data
 
 import android.accounts.NetworkErrorException
 import android.content.Context
@@ -44,11 +44,12 @@ data class RepoError(val status: ErrorCode, val function: KFunction<*>? = null) 
     }
 
     /**
-     * Show the error in a Toast
+     * Get the error message from the status
      *
-     * @param context Context to show the Toast
+     * @param context Context to get the string
+     * @return String of the error message
      */
-    fun showUsingCodeOnly(context: Context) {
+    fun getErrorMessage(context: Context): String {
         @StringRes val resId = when (status) {
             ErrorCode.CODE_NETWORK_PROBLEM -> R.string.error_no_network
             ErrorCode.CODE_HTTP_EXCEPTION -> R.string.error_http_exception
@@ -61,9 +62,18 @@ data class RepoError(val status: ErrorCode, val function: KFunction<*>? = null) 
             ErrorCode.CODE_NOT_FOUND -> R.string.error_no_found
             ErrorCode.CODE_TIMEOUT -> R.string.error_time_out
             ErrorCode.CODE_UNKNOWN_EXCEPTION -> R.string.error_default
-            ErrorCode.CODE_NOT_DISPLAY -> return  // Do nothing
+            ErrorCode.CODE_NOT_DISPLAY -> return ""  // Do nothing
         }
 
-        Toast.makeText(context, resId, Toast.LENGTH_SHORT).show()
+        return context.getString(resId)
+    }
+
+    /**
+     * Show the error in a Toast
+     *
+     * @param context Context to show the Toast
+     */
+    fun showUsingCodeOnly(context: Context) {
+        Toast.makeText(context, getErrorMessage(context), Toast.LENGTH_SHORT).show()
     }
 }

@@ -24,11 +24,12 @@ import com.dahlaran.naturaquiz.presentation.viewmodel.PlantViewModel
 fun HomeScreen(viewModel: PlantViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+
     state.selectedQuiz?.let {
         AnimatedQuizScreen(currentQuiz = it, onLeft = {
-            viewModel::nextPlant
+            viewModel.nextPlant()
         }, onRight = {
-            viewModel::nextPlant
+            viewModel.nextPlant()
         })
     } ?: run {
         Box(

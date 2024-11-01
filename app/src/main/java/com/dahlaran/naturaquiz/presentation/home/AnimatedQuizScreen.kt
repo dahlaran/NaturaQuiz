@@ -1,16 +1,12 @@
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
@@ -25,10 +21,10 @@ fun AnimatedQuizScreen(
     currentQuiz: SelectedQuiz,
     onLeft: () -> Unit,
     onRight: () -> Unit,
-    fallDirection: FallDirection = FallDirection.RIGHT
 ) {
     var isAnimating: Boolean by remember { mutableStateOf(false) }
     var previousQuiz: SelectedQuiz? by remember { mutableStateOf(null) }
+    var fallDirection = remember { FallDirection.LEFT }
 
     val scale = remember { Animatable(1f) }
     val zIndex = remember { Animatable(1f) }
@@ -57,7 +53,7 @@ fun AnimatedQuizScreen(
                 prevRotation.animateTo(
                     targetValue = if (fallDirection == FallDirection.RIGHT) 90f else -90f,
                     animationSpec = tween(
-                        durationMillis = 1500,  // Slowed down animation
+                        durationMillis = 2000,
                         easing = FastOutSlowInEasing
                     )
                 )
@@ -67,7 +63,7 @@ fun AnimatedQuizScreen(
                 prevYTranslation.animateTo(
                     targetValue = 1000f,
                     animationSpec = tween(
-                        durationMillis = 1500,
+                        durationMillis = 2000,
                         easing = FastOutSlowInEasing
                     )
                 )
@@ -77,7 +73,7 @@ fun AnimatedQuizScreen(
                 prevXTranslation.animateTo(
                     targetValue = if (fallDirection == FallDirection.RIGHT) 500f else -500f,
                     animationSpec = tween(
-                        durationMillis = 1500,
+                        durationMillis = 2000,
                         easing = FastOutSlowInEasing
                     )
                 )
@@ -127,20 +123,20 @@ fun AnimatedQuizScreen(
             quiz = currentQuiz,
             onLeftClick = {
                 if (!isAnimating) {
-                    //fallDirection = FallDirection.LEFT
+                    fallDirection = FallDirection.LEFT
                     onLeft()
                 }
             },
             onRightClick = {
                 if (!isAnimating) {
-                    //fallDirection = FallDirection.RIGHT
+                    fallDirection = FallDirection.RIGHT
                     onRight()
                 }
             },
 
             )
 
-        // Previous screen (falls away), disable click events
+        // Previous screen (falls away), disable its click events
         if (isAnimating && previousQuiz != null) {
             QuizScreenContent(
                 modifier = Modifier

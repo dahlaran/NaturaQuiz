@@ -48,6 +48,7 @@ class PlantViewModel @Inject constructor(
 
 
     fun nextPlant() {
+        if (_state.value.isLoading) return
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             getPlantResponseUseCase.invoke(_state.value.plants, _state.value.selectedQuiz).let { getPlantResponse ->

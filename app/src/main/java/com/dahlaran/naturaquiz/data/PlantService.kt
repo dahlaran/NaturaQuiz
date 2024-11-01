@@ -8,10 +8,10 @@ import retrofit2.http.Query
 
 
 interface PlantService {
-    @GET("")
+    @GET("v1/")
     suspend fun getPlantsCount(): Response<PlantsCountResponse>
 
 
-    @GET("plants")
-    suspend fun getPlants(@Query("page") page: Int, @Query("limit") limit: Int = 10): Response<PlantsResponse>
+    @GET("v1/plants")
+    suspend fun getPlants(@Query("page") page: Int, @Query("limit") limit: Int = 20): Response<PlantsResponse>
 }

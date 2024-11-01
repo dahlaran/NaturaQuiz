@@ -1,7 +1,7 @@
 package com.dahlaran.naturaquiz.domain.usecases
 
 
-import com.dahlaran.naturaquiz.core.DataState
+import com.dahlaran.naturaquiz.core.data.DataState
 import com.dahlaran.naturaquiz.data.model.Plant
 import com.dahlaran.naturaquiz.domain.PlantRepository
 import javax.inject.Inject

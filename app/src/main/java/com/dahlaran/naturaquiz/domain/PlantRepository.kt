@@ -1,6 +1,6 @@
 package com.dahlaran.naturaquiz.domain
 
-import com.dahlaran.naturaquiz.core.DataState
+import com.dahlaran.naturaquiz.core.data.DataState
 import com.dahlaran.naturaquiz.data.model.Plant
 
 interface PlantRepository {

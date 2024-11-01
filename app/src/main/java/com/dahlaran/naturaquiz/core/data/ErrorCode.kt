@@ -1,4 +1,4 @@
-package com.dahlaran.naturaquiz.core
+package com.dahlaran.naturaquiz.core.data
 
 enum class ErrorCode(val value: Int) {
     CODE_NOT_DISPLAY(0),

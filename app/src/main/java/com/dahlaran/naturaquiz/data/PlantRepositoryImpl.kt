@@ -1,7 +1,7 @@
 package com.dahlaran.naturaquiz.data
 
-import com.dahlaran.naturaquiz.core.DataState
-import com.dahlaran.naturaquiz.core.RepoError
+import com.dahlaran.naturaquiz.core.data.DataState
+import com.dahlaran.naturaquiz.core.data.RepoError
 import com.dahlaran.naturaquiz.data.model.Plant
 import com.dahlaran.naturaquiz.domain.PlantRepository
 import javax.inject.Inject
@@ -32,7 +32,7 @@ class PlantRepositoryImpl @Inject constructor(private val plantService: PlantSer
     override suspend fun getPlants(): DataState<List<Plant>> {
         try {
             // Random page to get a different set of plants each time
-            val randomPage = (1..plantNumber / 10).random()
+            val randomPage = (1..plantNumber / 20).random()
 
             val response = plantService.getPlants(randomPage)
             if (response.isSuccessful) {

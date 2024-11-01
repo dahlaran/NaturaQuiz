@@ -1,4 +1,4 @@
-package com.dahlaran.naturaquiz.core
+package com.dahlaran.naturaquiz.core.data
 
 /**
  * DataState is a sealed class that can be used to handle the state of a data
@@ -17,5 +17,5 @@ sealed class DataState<out T> {
      *
      * @param repoError the error that occurred
      */
-    data class Error(val repoError: com.dahlaran.naturaquiz.core.RepoError) : DataState<Nothing>()
+    data class Error(val repoError: RepoError) : DataState<Nothing>()
 }

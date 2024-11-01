@@ -1,13 +1,11 @@
 package com.dahlaran.naturaquiz.data.model
 
-import com.google.gson.annotations.SerializedName
+import com.dahlaran.naturaquiz.domain.entities.Plant
 
-data class Plant(
-    val id: Int,
-    @SerializedName("common_name") val name: String,
-    @SerializedName("image_url") val imageUrl: String
-)
 
+/**
+ * Model send by the API when fetching plants
+ */
 data class PlantsResponse(
     val data: List<Plant>
 )

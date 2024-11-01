@@ -1,8 +1,8 @@
 package com.dahlaran.naturaquiz.data
 
-import com.dahlaran.naturaquiz.core.DataState
-import com.dahlaran.naturaquiz.core.RepoError
-import com.dahlaran.naturaquiz.data.model.Plant
+import com.dahlaran.naturaquiz.core.data.DataState
+import com.dahlaran.naturaquiz.core.data.RepoError
+import com.dahlaran.naturaquiz.domain.entities.Plant
 import com.dahlaran.naturaquiz.domain.PlantRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -10,6 +10,9 @@ import javax.inject.Singleton
 @Singleton
 class PlantRepositoryImpl @Inject constructor(private val plantService: PlantService) :
     PlantRepository {
+        companion object {
+            const val PAGE_SIZE = 20
+        }
 
     override var plantNumber = 0
     override suspend fun getPlantsCount(): DataState<Int> {
@@ -32,7 +35,7 @@ class PlantRepositoryImpl @Inject constructor(private val plantService: PlantSer
     override suspend fun getPlants(): DataState<List<Plant>> {
         try {
             // Random page to get a different set of plants each time
-            val randomPage = (1..plantNumber / 10).random()
+            val randomPage = (1..plantNumber / PAGE_SIZE).random()
 
             val response = plantService.getPlants(randomPage)
             if (response.isSuccessful) {

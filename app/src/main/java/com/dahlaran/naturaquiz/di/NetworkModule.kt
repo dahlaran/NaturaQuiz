@@ -1,5 +1,6 @@
 package com.dahlaran.naturaquiz.di
 
+import com.dahlaran.naturaquiz.BuildConfig
 import com.dahlaran.naturaquiz.core.network.AuthInterceptor
 import com.dahlaran.naturaquiz.data.PlantService
 import dagger.Module
@@ -16,12 +17,11 @@ import javax.inject.Singleton
 object NetworkModule {
 
     private const val BASE_URL = "https://trefle.io/api/"
-    private const val API_TOKEN = "YGEw3MIekubf1uUODnIo17t-Vh19Ja6nm9QwZiwXtJo"
 
     @Provides
     @Singleton
     fun provideAuthInterceptor(): AuthInterceptor {
-        return AuthInterceptor(API_TOKEN)
+        return AuthInterceptor(BuildConfig.API_KEY)
     }
 
     @Provides

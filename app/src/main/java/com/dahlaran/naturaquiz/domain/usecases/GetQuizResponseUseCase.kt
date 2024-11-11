@@ -5,47 +5,63 @@ import com.dahlaran.naturaquiz.core.data.ErrorCode
 import com.dahlaran.naturaquiz.core.data.RepoError
 import com.dahlaran.naturaquiz.core.extensions.firstOrNullFromIndex
 import com.dahlaran.naturaquiz.data.model.Plant
-import com.dahlaran.naturaquiz.data.model.SelectedQuiz
+import com.dahlaran.naturaquiz.data.model.Quiz
 import javax.inject.Inject
 
 class GetQuizResponseUseCase @Inject constructor() {
 
     operator fun invoke(
         plants: List<Plant>?,
-        selectedQuiz: SelectedQuiz?
-    ): DataState<SelectedQuiz?> {
+        displayedQuiz: Quiz?,
+    ): DataState<List<Quiz>> {
         if (plants == null) {
             return DataState.Error(RepoError(ErrorCode.CODE_NOT_DISPLAY))
         }
+        val generatedQuiz = mutableListOf<Quiz>()
 
-        val solution = getGoodPlant(plants, selectedQuiz?.goodAnswer)
-            ?: return DataState.Error(RepoError(ErrorCode.CODE_NOT_DISPLAY))
-        val wrongPlant = getWrongPlant(plants, solution, selectedQuiz?.wrongAnswer)
-            ?: return DataState.Error(RepoError(ErrorCode.CODE_NOT_DISPLAY))
+        val displayedGeneratedQuiz: Quiz? = displayedQuiz ?: generateQuiz(plants, null)
+        displayedGeneratedQuiz?.let { displayed ->
+            generatedQuiz.add(displayed)
+            val newQuiz = generateQuiz(plants, displayed)
+            newQuiz?.let { new ->
+                generatedQuiz.add(new)
+            } ?: return DataState.Error(RepoError(ErrorCode.CODE_NOT_DISPLAY))
+        } ?: return DataState.Error(RepoError(ErrorCode.CODE_NOT_DISPLAY))
+
+        return DataState.Success(generatedQuiz)
+    }
+
+    private fun generateQuiz(plants: List<Plant>, quiz: Quiz?): Quiz? {
+        val goodPlant = getGoodPlant(plants, quiz?.goodAnswer)
+            ?: return null
+        val wrongPlant = getWrongPlant(plants, goodPlant, quiz?.wrongAnswer)
+            ?: return null
 
         val leftIsGoodAnswer = (0..1).random() == 0
-        return SelectedQuiz(solution, wrongPlant, leftIsGoodAnswer).let {
-            DataState.Success(it)
-        }
+        return Quiz(goodPlant, wrongPlant, leftIsGoodAnswer)
     }
 
     private fun getGoodPlant(plants: List<Plant>, currentPlant: Plant?): Plant? {
         val nextPlant = if (currentPlant == null) {
             plants.firstOrNull { it.isEligibleForQuiz() }
         } else {
+            // Check if the current plant is still in the list
             val index = plants.indexOf(currentPlant)
             if (index != -1 && plants.size > index) {
+                // Take next eligible plant that is after the current plant
                 plants.firstOrNullFromIndex(index + 1) { it.isEligibleForQuiz() }
             } else {
-                null
+                // Take first eligible plant
+                plants.firstOrNull { it.isEligibleForQuiz() }
             }
         }
         return nextPlant
     }
 
     private fun getWrongPlant(plants: List<Plant>, goodPlant: Plant, oldWrongAnswer: Plant?): Plant? {
+        // TODO: Improve logic to avoid getting the same wrong answer multiple times and avoid getting the good answer as a wrong answer for the next question
         val wrongPlants =
-            plants.filter { it.name != goodPlant.name && it.scientificName != goodPlant.scientificName && it.isEligibleForQuiz() && it.id != oldWrongAnswer?.id }
+            plants.filter { (it.name != goodPlant.name || (it.name == null && it.scientificName != goodPlant.scientificName)) && it.isEligibleForWrongAnswer() && it.id != oldWrongAnswer?.id }
         val wrongPlant = wrongPlants.randomOrNull()
         return wrongPlant
     }

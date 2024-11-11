@@ -13,5 +13,5 @@ interface PlantService {
 
 
     @GET("v1/plants")
-    suspend fun getPlants(@Query("page") page: Int, @Query("limit") limit: Int = 20): Response<PlantsResponse>
+    suspend fun getPlants(@Query("page") page: Int): Response<PlantsResponse>
 }

@@ -10,6 +10,9 @@ import javax.inject.Singleton
 @Singleton
 class PlantRepositoryImpl @Inject constructor(private val plantService: PlantService) :
     PlantRepository {
+        companion object {
+            const val PAGE_SIZE = 20
+        }
 
     override var plantNumber = 0
     override suspend fun getPlantsCount(): DataState<Int> {
@@ -32,7 +35,7 @@ class PlantRepositoryImpl @Inject constructor(private val plantService: PlantSer
     override suspend fun getPlants(): DataState<List<Plant>> {
         try {
             // Random page to get a different set of plants each time
-            val randomPage = (1..plantNumber / 20).random()
+            val randomPage = (1..plantNumber / PAGE_SIZE).random()
 
             val response = plantService.getPlants(randomPage)
             if (response.isSuccessful) {

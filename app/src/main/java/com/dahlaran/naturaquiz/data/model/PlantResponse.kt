@@ -12,6 +12,10 @@ data class Plant(
         return imageUrl?.isNotEmpty() == true && (name?.isNotEmpty() == true || scientificName?.isNotEmpty() == true)
     }
 
+    fun isEligibleForWrongAnswer(): Boolean {
+        return  name?.isNotEmpty() == true || scientificName?.isNotEmpty() == true
+    }
+
     fun getNotNullName(): String {
         return if (name?.isNotEmpty() == true) {
             name

@@ -1,6 +1,6 @@
 package com.dahlaran.naturaquiz.data.model
 
-data class SelectedQuiz(
+data class Quiz(
     val goodAnswer: Plant,
     val wrongAnswer: Plant,
     val leftIsGoodAnswer : Boolean,

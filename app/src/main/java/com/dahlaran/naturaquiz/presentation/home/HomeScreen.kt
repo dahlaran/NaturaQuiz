@@ -12,10 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.dahlaran.naturaquiz.presentation.viewmodel.PlantViewModel
+import com.dahlaran.naturaquiz.presentation.viewmodel.QuizViewModel
 
 @Composable
-fun HomeScreen(viewModel: PlantViewModel) {
+fun HomeScreen(viewModel: QuizViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     state.quiz?.let {

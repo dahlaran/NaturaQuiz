@@ -8,6 +8,9 @@ import dagger.hilt.android.HiltAndroidApp
 import net.danlew.android.joda.BuildConfig
 import timber.log.Timber
 
+/**
+ * Application class for the NaturaQuiz app
+ */
 @HiltAndroidApp
 class NaturaQuizApplication: Application() {
     lateinit var imageLoader: ImageLoader

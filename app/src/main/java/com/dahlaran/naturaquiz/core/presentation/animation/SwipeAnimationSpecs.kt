@@ -18,7 +18,7 @@ object SwipeAnimationSpecs {
 
     // Animation constants
     const val ROTATION_FACTOR = 0.1f
-    const val MAX_ROTATION = 15f
+    const val MAX_ROTATION = 10f
     const val SWIPE_THRESHOLD_DP = 100f
     const val ANIMATION_DELAY_MS = 300L
 }

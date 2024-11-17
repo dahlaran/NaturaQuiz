@@ -4,8 +4,8 @@ import com.dahlaran.naturaquiz.core.data.DataState
 import com.dahlaran.naturaquiz.core.data.ErrorCode
 import com.dahlaran.naturaquiz.core.data.RepoError
 import com.dahlaran.naturaquiz.core.extensions.firstOrNullFromIndex
-import com.dahlaran.naturaquiz.data.model.Plant
-import com.dahlaran.naturaquiz.data.model.Quiz
+import com.dahlaran.naturaquiz.domain.entities.Plant
+import com.dahlaran.naturaquiz.domain.entities.Quiz
 import javax.inject.Inject
 
 class GetQuizResponseUseCase @Inject constructor() {

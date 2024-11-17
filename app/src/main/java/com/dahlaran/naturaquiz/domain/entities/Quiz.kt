@@ -1,4 +1,4 @@
-package com.dahlaran.naturaquiz.data.model
+package com.dahlaran.naturaquiz.domain.entities
 
 data class Quiz(
     val goodAnswer: Plant,

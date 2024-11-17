@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.dahlaran.naturaquiz.core.presentation.animation.SwipeAnimationSpecs
 import com.dahlaran.naturaquiz.core.presentation.animation.SwipeDirection
 import com.dahlaran.naturaquiz.core.presentation.animation.rememberSwipeAnimationState
-import com.dahlaran.naturaquiz.data.model.Quiz
+import com.dahlaran.naturaquiz.domain.entities.Quiz
 import kotlinx.coroutines.launch
 
 @Composable

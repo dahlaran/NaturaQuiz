@@ -4,9 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.dahlaran.naturaquiz.core.bus.Event
 import com.dahlaran.naturaquiz.core.data.BaseViewModel
 import com.dahlaran.naturaquiz.core.data.DataState
-import com.dahlaran.naturaquiz.data.model.Plant
-import com.dahlaran.naturaquiz.domain.usecases.GetQuizResponseUseCase
+import com.dahlaran.naturaquiz.domain.entities.Plant
 import com.dahlaran.naturaquiz.domain.usecases.GetPlantsUseCase
+import com.dahlaran.naturaquiz.domain.usecases.GetQuizResponseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,8 +14,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the quiz screen
+ */
 @HiltViewModel
-class PlantViewModel @Inject constructor(
+class QuizViewModel @Inject constructor(
     private val getPlantsUseCase: GetPlantsUseCase,
     private val getPlantResponseUseCase: GetQuizResponseUseCase
 ) : BaseViewModel() {
@@ -37,14 +40,23 @@ class PlantViewModel @Inject constructor(
         }
     }
 
-
+    /**
+     * Handle the answer of the user
+     *
+     * @param isLeft : Boolean to know if the user clicked/dragged on the left button
+     */
     fun handleAnswer(isLeft: Boolean) {
         // Check if the answer is correct
         val isCorrect = state.value.quiz?.let { quiz ->
             if (isLeft) quiz.leftIsGoodAnswer else !quiz.leftIsGoodAnswer
         } ?: false
 
-        // TODO : Create score and store it
+        // TODO : Store the score in the database to display the best score done by the user
+        if (isCorrect) {
+            _state.update { it.copy(score = state.value.score + 1) }
+        }else {
+            _state.update { it.copy(score = 0) }
+        }
 
         nextPlant()
     }
@@ -55,10 +67,6 @@ class PlantViewModel @Inject constructor(
         viewModelScope.launch {
             createQuizResponse(_state.value.plants)
         }
-    }
-
-    fun onAnimationComplete() {
-        _state.update { it.copy(nextQuiz = null) }
     }
 
     private fun createQuizResponse(plants: List<Plant>?) {

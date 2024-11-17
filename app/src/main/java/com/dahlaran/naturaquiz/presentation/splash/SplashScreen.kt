@@ -1,6 +1,5 @@
 package com.dahlaran.naturaquiz.presentation.splash
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
@@ -17,10 +16,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.dahlaran.naturaquiz.core.bus.Event
 import com.dahlaran.naturaquiz.core.bus.EventBus
-import com.dahlaran.naturaquiz.presentation.viewmodel.PlantViewModel
+import com.dahlaran.naturaquiz.presentation.viewmodel.QuizViewModel
 
+/**
+ * SplashScreen composable that will display a loading indicator while fetching the plants
+ */
 @Composable
-fun SplashScreen(viewModel: PlantViewModel, navController: NavHostController) {
+fun SplashScreen(viewModel: QuizViewModel, navController: NavHostController) {
     LaunchedEffect(Unit) {
         viewModel.fetchPlants()
     }

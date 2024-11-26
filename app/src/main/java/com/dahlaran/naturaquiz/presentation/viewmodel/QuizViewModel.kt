@@ -51,11 +51,11 @@ class QuizViewModel @Inject constructor(
             if (isLeft) quiz.leftIsGoodAnswer else !quiz.leftIsGoodAnswer
         } ?: false
 
-        // TODO : Store the score in the database to display the best score done by the user
+        // TODO : Store the streak in the database to display the best score done by the user
         if (isCorrect) {
-            _state.update { it.copy(score = state.value.score + 1) }
+            _state.update { it.copy(streak = state.value.streak + 1) }
         }else {
-            _state.update { it.copy(score = 0) }
+            _state.update { it.copy(streak = 0) }
         }
 
         nextPlant()

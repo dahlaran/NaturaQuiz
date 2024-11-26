@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.dahlaran.naturaquiz.presentation.home.quiz_screen.SwipeableQuizScreen
 import com.dahlaran.naturaquiz.presentation.viewmodel.QuizViewModel
 
 @Composable
@@ -19,9 +20,10 @@ fun HomeScreen(viewModel: QuizViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     state.quiz?.let {
-        com.dahlaran.naturaquiz.presentation.home.quiz_screen.SwipeableQuizScreen(
+        SwipeableQuizScreen(
             currentQuiz = it,
             nextQuiz = state.nextQuiz!!,
+            streak = state.streak,
             onSwipeLeft = {
                 viewModel.handleAnswer(isLeft = true)
             },

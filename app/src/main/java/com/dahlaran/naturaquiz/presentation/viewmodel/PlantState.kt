@@ -14,4 +14,4 @@ data class PlantState(
     val nextQuiz: Quiz? = null,
     val error: RepoError? = null,
     val isLoading: Boolean = false,
-    val score: Int = 0,)
+    val streak: Int = 0,)

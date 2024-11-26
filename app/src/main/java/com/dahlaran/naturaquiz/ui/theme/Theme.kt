@@ -58,6 +58,7 @@ fun NaturaQuizTheme(
             background = Color(0xFFF1F8E9),
             surface = Color(0xFFFFFFFF),
             onPrimary = Color(0xFFFFFFFF),
+            onPrimaryContainer = Color(0xFFFFFFFF),
             onSecondary = Color(0xFF000000),
             onBackground = Color(0xFF000000),
             onSurface = Color(0xFF000000)

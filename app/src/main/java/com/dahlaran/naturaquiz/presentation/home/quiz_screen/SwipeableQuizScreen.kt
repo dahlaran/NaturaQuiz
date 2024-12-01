@@ -152,9 +152,9 @@ fun SwipeableQuizScreen(
 fun SwipeableQuizScreenPreview() {
     val quiz = Quiz(
         goodAnswer = Plant(
-            1, "Good Plant", "Good Scientific Name", "https://www.example.com/image.jpg"
+            1, "Good Plant", "Good Scientific Name", "https://d2seqvvyy3b8p2.cloudfront.net/60ea5b8f7de66e8e95be30b2989bfcbe.jpg", 1999, "Family 1", "Genus 1"
         ), wrongAnswer = Plant(
-            2, "Wrong Plant", "Wrong Scientific Name", "https://www.example.com/image.jpg"
+            2, "Wrong Plant", "Wrong Scientific Name", null, 2000, "Family 2", "Genus 2"
         ), leftIsGoodAnswer = true
     )
 

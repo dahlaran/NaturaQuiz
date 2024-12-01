@@ -8,7 +8,7 @@ import com.dahlaran.naturaquiz.domain.entities.Quiz
  * PlantState is a data class that can be used to handle the state of a Plant
  * It can be used to handle the state of a Plant in a ViewModel
  */
-data class PlantState(
+data class QuizState(
     val plants : List<Plant>? = null,
     val quiz: Quiz? = null,
     val nextQuiz: Quiz? = null,

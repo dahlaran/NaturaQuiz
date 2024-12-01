@@ -23,7 +23,7 @@ class QuizViewModel @Inject constructor(
     private val getPlantResponseUseCase: GetQuizResponseUseCase
 ) : BaseViewModel() {
 
-    private val _state = MutableStateFlow(PlantState())
+    private val _state = MutableStateFlow(QuizState())
     val state = _state.asStateFlow()
 
     /**
@@ -79,7 +79,8 @@ class QuizViewModel @Inject constructor(
                         plants = plants,
                         quiz = getPlantResponse.data.first(),
                         nextQuiz = getPlantResponse.data.getOrNull(1),
-                        isLoading = false
+                        isLoading = false,
+                        error = null
                     )
                 }
                 sendEvent(Event.NavigateToHomeScreen)

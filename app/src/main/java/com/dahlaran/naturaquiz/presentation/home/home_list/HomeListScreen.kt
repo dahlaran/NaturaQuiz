@@ -42,12 +42,16 @@ fun HomeListScreen(listsViewModel: ListsViewModel) {
                         sharedTransitionScope = this@SharedTransitionLayout,
                         animatedVisibilityScope = this@AnimatedContent,
                         onPlantSelected = { plant ->
-                            selectedPlant = plant
-                            detailDisplay = HomeDetail.PLANT_DETAIL
+                            if (detailDisplay == HomeDetail.NONE) {
+                                selectedPlant = plant
+                                detailDisplay = HomeDetail.PLANT_DETAIL
+                            }
                         },
                         onSpecieSelected = { specie ->
-                            selectedSpecie = specie
-                            detailDisplay = HomeDetail.SPECIE_DETAIL
+                            if (detailDisplay == HomeDetail.NONE) {
+                                selectedSpecie = specie
+                                detailDisplay = HomeDetail.SPECIE_DETAIL
+                            }
                         },
                         onRefresh = { listsViewModel.fetchLists() }
                     )

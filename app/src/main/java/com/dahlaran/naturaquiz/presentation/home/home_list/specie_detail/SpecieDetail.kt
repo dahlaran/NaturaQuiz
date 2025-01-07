@@ -45,12 +45,16 @@ fun SpecieDetailScreen(
         onBackPressed()
     }
     with(sharedTransitionScope) {
+        val boundsKey = "bounds_specie${specie.id}"
+        val imageKey = "image_specie${specie.id}"
+        val nameKey = "name_specie${specie.id}"
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
                 .sharedBounds(
-                    rememberSharedContentState(key = "bounds_specie" + specie.id),
+                    rememberSharedContentState(key = boundsKey),
                     animatedVisibilityScope = animatedVisibilityScope,
                     enter = fadeIn(),
                     exit = fadeOut(),
@@ -82,7 +86,7 @@ fun SpecieDetailScreen(
                     overflow = TextOverflow.Ellipsis,
                     fontStyle = FontStyle.Italic,
                     modifier = Modifier.sharedElement(
-                        rememberSharedContentState(key = "name_specie" + specie.id),
+                        rememberSharedContentState(key = nameKey),
                         animatedVisibilityScope = animatedVisibilityScope
                     )
                 )
@@ -96,8 +100,9 @@ fun SpecieDetailScreen(
                     .fillMaxWidth()
                     .height(250.dp)
                     .sharedElement(
-                        rememberSharedContentState(key = "image_specie" + specie.id),
+                        rememberSharedContentState(key = imageKey),
                         animatedVisibilityScope = animatedVisibilityScope,
+
                         boundsTransform = { _, _ ->
                             spring(
                                 dampingRatio = 0.8f,

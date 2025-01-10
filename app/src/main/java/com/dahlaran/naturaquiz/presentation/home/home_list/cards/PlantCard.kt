@@ -76,10 +76,10 @@ fun PlantCard(
                 )
                 Text(
                     text = plant.scientificName ?: "",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontStyle = FontStyle.Italic,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Clip,
                     modifier = Modifier
                         .padding(top = 8.dp)
                         .sharedBounds(

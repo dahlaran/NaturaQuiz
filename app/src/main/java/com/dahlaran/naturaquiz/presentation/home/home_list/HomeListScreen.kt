@@ -1,69 +1,86 @@
 package com.dahlaran.naturaquiz.presentation.home.home_list
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.dahlaran.naturaquiz.domain.entities.Plant
-import com.dahlaran.naturaquiz.domain.entities.Specie
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.dahlaran.naturaquiz.presentation.home.home_list.layouts.HomeListErrorLayout
+import com.dahlaran.naturaquiz.presentation.home.home_list.plant_detail.PlantDetailScreen
+import com.dahlaran.naturaquiz.presentation.home.home_list.specie_detail.SpecieDetailScreen
 import com.dahlaran.naturaquiz.presentation.viewmodel.ListsViewModel
 
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeListScreen(listsViewModel: ListsViewModel) {
-    var selectedPlant by remember { mutableStateOf<Plant?>(null) }
-    var selectedSpecie by remember { mutableStateOf<Specie?>(null) }
-    var detailDisplay by remember { mutableStateOf<HomeDetail>(HomeDetail.NONE) }
     val state by listsViewModel.state.collectAsStateWithLifecycle()
 
     SharedTransitionLayout {
-        AnimatedContent(
-            detailDisplay,
-            label = "list_transition"
+        val navController = rememberNavController()
+        NavHost(
+            navController = navController,
+            startDestination = "list"
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                when {
-                    state.error != null -> HomeListErrorLayout(
-                        error = state.error!!,
-                        onRetry = { listsViewModel.fetchLists() }
-                    )
-                    it == HomeDetail.NONE -> HomeListContent(
-                        state = state,
+            composable("list") {
+                HomeListContent(
+                    state = state,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@composable,
+                    onPlantSelected = { plant ->
+                        navController.navigate("detail/plant/${plant.id}")
+                    },
+                    onSpecieSelected = { specie ->
+                        navController.navigate("detail/specie/${specie.id}")
+                    },
+                    onRefresh = { listsViewModel.fetchLists() }
+                )
+            }
+
+            composable(
+                "detail/plant/{id}",
+                arguments = listOf(navArgument("id") { type = NavType.IntType })
+            ) {
+                val id = it.arguments?.getInt("id")
+                state.plants?.find { it.id == id }?.let { plant ->
+                    PlantDetailScreen(
+                        plant = plant,
+                        animatedVisibilityScope = this@composable,
                         sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedVisibilityScope = this@AnimatedContent,
-                        onPlantSelected = { plant ->
-                            if (detailDisplay == HomeDetail.NONE) {
-                                selectedPlant = plant
-                                detailDisplay = HomeDetail.PLANT_DETAIL
-                            }
-                        },
-                        onSpecieSelected = { specie ->
-                            if (detailDisplay == HomeDetail.NONE) {
-                                selectedSpecie = specie
-                                detailDisplay = HomeDetail.SPECIE_DETAIL
-                            }
-                        },
-                        onRefresh = { listsViewModel.fetchLists() }
+                        onBackPressed = { navController.navigateUp() }
                     )
-                    else -> DetailContent(
-                        detailDisplay = detailDisplay,
-                        selectedPlant = selectedPlant,
-                        selectedSpecie = selectedSpecie,
-                        animatedVisibilityScope = this@AnimatedContent,
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        onBackPressed = { detailDisplay = HomeDetail.NONE }
-                    )
+                } ?: run {
+                    navController.navigate("error")
                 }
+            }
+
+            composable(
+                "detail/specie/{id}",
+                arguments = listOf(navArgument("id") { type = NavType.IntType })
+            ) {
+                val id = it.arguments?.getInt("id")
+                state.species?.find { it.id == id }?.let { specie ->
+                    SpecieDetailScreen(
+                        specie = specie,
+                        animatedVisibilityScope = this@composable,
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        onBackPressed = { navController.navigateUp() }
+                    )
+                } ?: run {
+                    navController.navigate("error")
+                }
+            }
+
+            composable("error") {
+                HomeListErrorLayout(
+                    error = state.error!!,
+                    onRetry = { listsViewModel.fetchLists() }
+                )
             }
         }
     }

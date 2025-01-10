@@ -81,9 +81,10 @@ fun PlantDetailScreen(
 
                 Text(
                     text = plant.scientificName ?: "",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    fontWeight = FontWeight.Bold,
+                    overflow = TextOverflow.Clip,
                     fontStyle = FontStyle.Italic,
                     modifier = Modifier.sharedElement(
                         rememberSharedContentState(key = nameKey),

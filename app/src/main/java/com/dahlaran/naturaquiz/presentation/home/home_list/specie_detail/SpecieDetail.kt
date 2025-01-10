@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -81,9 +82,10 @@ fun SpecieDetailScreen(
 
                 Text(
                     text = specie.getNotNullName(),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Clip,
                     fontStyle = FontStyle.Italic,
                     modifier = Modifier.sharedElement(
                         rememberSharedContentState(key = nameKey),
@@ -99,17 +101,14 @@ fun SpecieDetailScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(250.dp)
-                    .sharedElement(
-                        rememberSharedContentState(key = imageKey),
+                    .sharedElement(rememberSharedContentState(key = imageKey),
                         animatedVisibilityScope = animatedVisibilityScope,
 
                         boundsTransform = { _, _ ->
                             spring(
-                                dampingRatio = 0.8f,
-                                stiffness = 380f
+                                dampingRatio = 0.8f, stiffness = 380f
                             )
-                        }
-                    )
+                        })
                     .clip(MaterialTheme.shapes.medium),
             )
 

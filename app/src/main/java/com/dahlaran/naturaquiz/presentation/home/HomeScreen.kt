@@ -8,9 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.dahlaran.naturaquiz.presentation.home.home_list.HomeListScreen
 import com.dahlaran.naturaquiz.presentation.home.navigation_bar.BottomNavBar
 import com.dahlaran.naturaquiz.presentation.home.navigation_bar.BottomNavScreen
-import com.dahlaran.naturaquiz.presentation.home.home_list.HomeListScreen
 import com.dahlaran.naturaquiz.presentation.home.quiz_screen.QuizHomeScreen
 import com.dahlaran.naturaquiz.presentation.viewmodel.ListsViewModel
 import com.dahlaran.naturaquiz.presentation.viewmodel.QuizViewModel

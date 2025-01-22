@@ -2,9 +2,9 @@ package com.dahlaran.naturaquiz.data
 
 import com.dahlaran.naturaquiz.core.data.DataState
 import com.dahlaran.naturaquiz.core.data.RepoError
-import com.dahlaran.naturaquiz.domain.entities.Plant
 import com.dahlaran.naturaquiz.domain.PlantRepository
 import com.dahlaran.naturaquiz.domain.entities.ListsHome
+import com.dahlaran.naturaquiz.domain.entities.Plant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -15,9 +15,9 @@ import javax.inject.Singleton
 @Singleton
 class PlantRepositoryImpl @Inject constructor(private val plantService: PlantService) :
     PlantRepository {
-        companion object {
-            const val PAGE_SIZE = 20
-        }
+    companion object {
+        const val PAGE_SIZE = 20
+    }
 
     override var plantNumber = 0
     override suspend fun getPlantsCount(): DataState<Int> {
@@ -71,7 +71,11 @@ class PlantRepositoryImpl @Inject constructor(private val plantService: PlantSer
                     )
                 )
             } else {
-                DataState.Error(RepoError.fromResponseBody(plantsResponse.errorBody() ?: speciesResponse.errorBody()))
+                DataState.Error(
+                    RepoError.fromResponseBody(
+                        plantsResponse.errorBody() ?: speciesResponse.errorBody()
+                    )
+                )
             }
         } catch (e: Exception) {
             DataState.Error(RepoError.fromException(e))

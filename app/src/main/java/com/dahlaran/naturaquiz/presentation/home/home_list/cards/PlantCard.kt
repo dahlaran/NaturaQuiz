@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,7 +50,10 @@ fun PlantCard(
                     exit = fadeOut(),
                     resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
                 )
-                .clickable(onClick = onClick)
+                .clickable(onClick = onClick),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.7f)
+            )
         ) {
             Column(
                 modifier = Modifier.padding(8.dp),

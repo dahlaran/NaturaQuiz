@@ -39,7 +39,11 @@ fun Navigation() {
         startDestination = "splash"
     ) {
         composable("splash") {
-            SplashScreen(quizViewModel = quizViewModel, listsViewModel = listsViewModel, navController = navController)
+            SplashScreen(
+                quizViewModel = quizViewModel,
+                listsViewModel = listsViewModel,
+                navController = navController
+            )
         }
         composable("home") {
             HomeScreen(quizViewModel = quizViewModel, listsViewModel = listsViewModel)

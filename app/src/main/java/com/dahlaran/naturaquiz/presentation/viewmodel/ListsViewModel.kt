@@ -10,10 +10,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the lists screen (Home screen)
+ */
 @HiltViewModel
 class ListsViewModel @Inject constructor(
     private val getListsHomeUseCase: GetListsHomeUseCase
-): BaseViewModel() {
+) : BaseViewModel() {
 
     private val _state = MutableStateFlow(ListsHomeState())
     val state = _state.asStateFlow()
@@ -22,7 +25,14 @@ class ListsViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             launchUsesCase(getListsHomeUseCase.invoke(), onSuccess = { lists ->
-                _state.update { it.copy(isLoading = false, plants = lists.plants , species = lists.species, error = null) }
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        plants = lists.plants,
+                        species = lists.species,
+                        error = null
+                    )
+                }
             }, onError = { error ->
                 _state.update { it.copy(isLoading = false, error = error) }
             })

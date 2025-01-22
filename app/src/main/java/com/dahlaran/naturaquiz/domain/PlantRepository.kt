@@ -23,10 +23,10 @@ interface PlantRepository {
     /**
      * Fetch plants from the API
      */
-    suspend fun getPlants() : DataState<List<Plant>>
+    suspend fun getPlants(): DataState<List<Plant>>
 
     /**
      * Fetch list from the API
      */
-    suspend fun getListsHome() : DataState<ListsHome>
+    suspend fun getListsHome(): DataState<ListsHome>
 }

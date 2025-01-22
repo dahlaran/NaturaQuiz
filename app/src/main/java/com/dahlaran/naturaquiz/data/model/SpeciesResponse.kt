@@ -1,6 +1,5 @@
 package com.dahlaran.naturaquiz.data.model
 
-import com.dahlaran.naturaquiz.domain.entities.Plant
 import com.dahlaran.naturaquiz.domain.entities.Specie
 
 

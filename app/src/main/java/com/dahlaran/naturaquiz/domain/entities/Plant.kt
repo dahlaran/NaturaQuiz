@@ -16,7 +16,7 @@ data class Plant(
     }
 
     fun isEligibleForWrongAnswer(): Boolean {
-        return  name?.isNotEmpty() == true || scientificName?.isNotEmpty() == true
+        return name?.isNotEmpty() == true || scientificName?.isNotEmpty() == true
     }
 
     fun getNotNullName(): String {

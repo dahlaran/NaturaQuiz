@@ -4,12 +4,12 @@ A Jetpack Compose Android application that helps users learn about plants and sp
 
 ## App Preview
 
-**Quiz**
-https://github.com/dahlaran/NaturaQuiz/screenshots/NaturaQuiz-Quiz.webm
+<div style="display: flex; justify-content: space-between; width: 100%;">
+  <img src="screenshoot/NaturaQuiz-Quiz.gif" width="300" alt="Quiz Animation">
+  <img src="screenshoot/NaturaQuiz-List.gif" width="300" alt="List Animation">
+</div>
 
-**List**
-https://github.com/dahlaran/NaturaQuiz/screenshots/NaturaQuiz-List.webm
-
+Note: Animations was not recorded properly due to my computer's performance but it works fine on a real device.
 
 ## Features
 

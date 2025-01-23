@@ -12,7 +12,7 @@ import timber.log.Timber
  * Application class for the NaturaQuiz app
  */
 @HiltAndroidApp
-class NaturaQuizApplication: Application() {
+class NaturaQuizApplication : Application() {
     lateinit var imageLoader: ImageLoader
         private set
 

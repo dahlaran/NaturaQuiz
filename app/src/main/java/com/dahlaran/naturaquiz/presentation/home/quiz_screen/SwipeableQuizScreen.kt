@@ -38,7 +38,8 @@ fun SwipeableQuizScreen(
     val coroutineScope = rememberCoroutineScope()
     var isFirstCardOnTop by remember { mutableStateOf(true) }
     var isAnswerCorrect by remember { mutableStateOf<Boolean?>(null) }
-
+    var currentQuizRemember by remember { mutableStateOf(currentQuiz) }
+    currentQuizRemember = currentQuiz
     // Animation states for both cards, reduce the second card's scale to 0.9f to make it smaller (its better)
     val firstCardState = rememberSwipeAnimationState(initialScale = 1f)
     val secondCardState = rememberSwipeAnimationState(initialScale = 0.9f)
@@ -54,8 +55,8 @@ fun SwipeableQuizScreen(
             val bottomCardState = if (isFirstCardOnTop) secondCardState else firstCardState
 
             isAnswerCorrect = when (direction) {
-                SwipeDirection.LEFT -> currentQuiz.leftIsGoodAnswer
-                SwipeDirection.RIGHT -> !currentQuiz.leftIsGoodAnswer
+                SwipeDirection.LEFT -> currentQuizRemember.leftIsGoodAnswer
+                SwipeDirection.RIGHT -> !currentQuizRemember.leftIsGoodAnswer
             }
 
             // Animate top card away
@@ -152,9 +153,15 @@ fun SwipeableQuizScreen(
 fun SwipeableQuizScreenPreview() {
     val quiz = Quiz(
         goodAnswer = Plant(
-            1, "Good Plant", "Good Scientific Name", "https://www.example.com/image.jpg"
+            1,
+            "Good Plant",
+            "Good Scientific Name",
+            "https://d2seqvvyy3b8p2.cloudfront.net/60ea5b8f7de66e8e95be30b2989bfcbe.jpg",
+            1999,
+            "Family 1",
+            "Genus 1"
         ), wrongAnswer = Plant(
-            2, "Wrong Plant", "Wrong Scientific Name", "https://www.example.com/image.jpg"
+            2, "Wrong Plant", "Wrong Scientific Name", null, 2000, "Family 2", "Genus 2"
         ), leftIsGoodAnswer = true
     )
 

@@ -1,6 +1,7 @@
 package com.dahlaran.naturaquiz.domain
 
 import com.dahlaran.naturaquiz.core.data.DataState
+import com.dahlaran.naturaquiz.domain.entities.ListsHome
 import com.dahlaran.naturaquiz.domain.entities.Plant
 
 /**
@@ -22,5 +23,10 @@ interface PlantRepository {
     /**
      * Fetch plants from the API
      */
-    suspend fun getPlants() : DataState<List<Plant>>
+    suspend fun getPlants(): DataState<List<Plant>>
+
+    /**
+     * Fetch list from the API
+     */
+    suspend fun getListsHome(): DataState<ListsHome>
 }

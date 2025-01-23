@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ScoreAnimation(
@@ -46,4 +47,10 @@ fun ScoreAnimation(
                 .background(if (isCorrect) Color(0xFF4CAF50) else Color(0xFFBF3131))
         )
     }
+}
+
+@Preview
+@Composable
+fun ScoreAnimationPreview() {
+    ScoreAnimation(isCorrect = true)
 }

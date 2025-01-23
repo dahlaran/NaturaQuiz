@@ -22,7 +22,10 @@ fun QuizButton(
     Button(
         onClick = onClick,
         modifier = modifier
-            .defaultMinSize(minWidth = QuizButtonDefaults.MinWidth, minHeight = QuizButtonDefaults.MinHeight),
+            .defaultMinSize(
+                minWidth = QuizButtonDefaults.MinWidth,
+                minHeight = QuizButtonDefaults.MinHeight
+            ),
         enabled = enabled,
         shape = RoundedCornerShape(QuizButtonDefaults.cornerRadius),
         colors = QuizButtonDefaults.buttonColors(),

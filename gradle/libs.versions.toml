@@ -1,6 +1,6 @@
 [versions]
 accompanist-swiperefresh = "0.24.2-alpha"
-agp = "8.5.2"
+agp = "8.7.3"
 android-joda = "2.10.9"
 coil-compose = "2.6.0"
 converter-gson = "2.9.0"
@@ -33,7 +33,14 @@ room-ktx = "2.6.1"
 room-runtime = "2.6.1"
 room-compiler = "2.6.1"
 timber = "5.0.1"
-runtime-livedata = "1.7.5"
+runtime-livedata = "1.7.6"
+
+# Testing versions
+mockk = "1.13.9"
+kotlinx-coroutines-test = "1.8.0"
+androidx-core-testing = "2.2.0"
+androidx-compose-ui-test = "1.7.6"
+ui-test-junit4-android = "1.7.6"
 
 [libraries]
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist-swiperefresh" }
@@ -76,6 +83,13 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtime-livedata" }
+
+# Testing libraries
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-core-testing" }
+androidx-compose-ui-test = { module = "androidx.compose.ui:ui-test", version.ref = "androidx-compose-ui-test" }
+androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "ui-test-junit4-android" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

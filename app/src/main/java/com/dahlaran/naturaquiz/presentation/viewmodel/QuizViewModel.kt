@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -23,7 +24,7 @@ class QuizViewModel @Inject constructor(
     private val getPlantResponseUseCase: GetQuizResponseUseCase
 ) : BaseViewModel() {
 
-    private val _state = MutableStateFlow(PlantState())
+    private val _state = MutableStateFlow(QuizState())
     val state = _state.asStateFlow()
 
     /**
@@ -33,8 +34,11 @@ class QuizViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             launchUsesCase(getPlantsUseCase.invoke(), onSuccess = { plants ->
+                Timber.e("Plants fetched : $plants")
                 createQuizResponse(plants)
             }, onError = { error ->
+                Timber.e("error : $error")
+
                 _state.update { it.copy(isLoading = false, error = error) }
             })
         }
@@ -54,7 +58,7 @@ class QuizViewModel @Inject constructor(
         // TODO : Store the streak in the database to display the best score done by the user
         if (isCorrect) {
             _state.update { it.copy(streak = state.value.streak + 1) }
-        }else {
+        } else {
             _state.update { it.copy(streak = 0) }
         }
 
@@ -79,7 +83,8 @@ class QuizViewModel @Inject constructor(
                         plants = plants,
                         quiz = getPlantResponse.data.first(),
                         nextQuiz = getPlantResponse.data.getOrNull(1),
-                        isLoading = false
+                        isLoading = false,
+                        error = null
                     )
                 }
                 sendEvent(Event.NavigateToHomeScreen)

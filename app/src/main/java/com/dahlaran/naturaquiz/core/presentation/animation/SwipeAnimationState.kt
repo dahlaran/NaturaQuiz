@@ -1,4 +1,5 @@
 package com.dahlaran.naturaquiz.core.presentation.animation
+
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.AnimationVector2D

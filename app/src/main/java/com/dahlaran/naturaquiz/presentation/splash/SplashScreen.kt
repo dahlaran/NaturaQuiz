@@ -2,8 +2,10 @@ package com.dahlaran.naturaquiz.presentation.splash
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,15 +18,21 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.dahlaran.naturaquiz.core.bus.Event
 import com.dahlaran.naturaquiz.core.bus.EventBus
+import com.dahlaran.naturaquiz.presentation.viewmodel.ListsViewModel
 import com.dahlaran.naturaquiz.presentation.viewmodel.QuizViewModel
 
 /**
  * SplashScreen composable that will display a loading indicator while fetching the plants
  */
 @Composable
-fun SplashScreen(viewModel: QuizViewModel, navController: NavHostController) {
+fun SplashScreen(
+    quizViewModel: QuizViewModel,
+    listsViewModel: ListsViewModel,
+    navController: NavHostController
+) {
     LaunchedEffect(Unit) {
-        viewModel.fetchPlants()
+        quizViewModel.fetchPlants()
+        listsViewModel.fetchLists()
     }
 
     val context = LocalContext.current
@@ -36,25 +44,33 @@ fun SplashScreen(viewModel: QuizViewModel, navController: NavHostController) {
                     is Event.ToastError -> {
                         event.error.showUsingCodeOnly(context)
                     }
+
                     is Event.NavigateToHomeScreen -> {
                         navController.navigate("home") {
                             popUpTo("splash") { inclusive = true }
                         }
                     }
-                } 
+                }
             }
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        viewModel.state.value.error?.let {
-            // Display an error
-            Button(onClick = { viewModel.fetchPlants() }) {
-                Text("Retry")
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            contentAlignment = Alignment.Center
+        ) {
+            quizViewModel.state.value.error?.let {
+                // Display an error
+                Button(onClick = { quizViewModel.fetchPlants() }) {
+                    Text("Retry")
+                }
+            } ?: run {
+                // Display a loading indicator
+                CircularProgressIndicator()
             }
-        } ?: run {
-            // Display a loading indicator
-            CircularProgressIndicator()
         }
     }
 }

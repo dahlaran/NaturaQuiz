@@ -58,7 +58,11 @@ class GetQuizResponseUseCase @Inject constructor() {
         return nextPlant
     }
 
-    private fun getWrongPlant(plants: List<Plant>, goodPlant: Plant, oldWrongAnswer: Plant?): Plant? {
+    private fun getWrongPlant(
+        plants: List<Plant>,
+        goodPlant: Plant,
+        oldWrongAnswer: Plant?
+    ): Plant? {
         // TODO: Improve logic to avoid getting the same wrong answer multiple times and avoid getting the good answer as a wrong answer for the next question
         val wrongPlants =
             plants.filter { (it.name != goodPlant.name || (it.name == null && it.scientificName != goodPlant.scientificName)) && it.isEligibleForWrongAnswer() && it.id != oldWrongAnswer?.id }

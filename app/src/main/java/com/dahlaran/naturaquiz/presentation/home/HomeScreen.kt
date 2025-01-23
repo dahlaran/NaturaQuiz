@@ -1,55 +1,37 @@
 package com.dahlaran.naturaquiz.presentation.home
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.dahlaran.naturaquiz.presentation.home.quiz_screen.SwipeableQuizScreen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.dahlaran.naturaquiz.presentation.home.home_list.HomeListScreen
+import com.dahlaran.naturaquiz.presentation.home.navigation_bar.BottomNavBar
+import com.dahlaran.naturaquiz.presentation.home.navigation_bar.BottomNavScreen
+import com.dahlaran.naturaquiz.presentation.home.quiz_screen.QuizHomeScreen
+import com.dahlaran.naturaquiz.presentation.viewmodel.ListsViewModel
 import com.dahlaran.naturaquiz.presentation.viewmodel.QuizViewModel
 
 @Composable
-fun HomeScreen(viewModel: QuizViewModel) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+fun HomeScreen(quizViewModel: QuizViewModel, listsViewModel: ListsViewModel) {
+    val navController = rememberNavController()
 
-    state.quiz?.let {
-        SwipeableQuizScreen(
-            currentQuiz = it,
-            nextQuiz = state.nextQuiz!!,
-            streak = state.streak,
-            onSwipeLeft = {
-                viewModel.handleAnswer(isLeft = true)
-            },
-            onSwipeRight = {
-                viewModel.handleAnswer(isLeft = false)
-            }
-        )
-    } ?: run {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(8.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            if (state.isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                ) {
-                    Text("Loading...")
+    Scaffold(
+        bottomBar = { BottomNavBar(navController) }
+    ) { padding ->
+        Box(modifier = Modifier.padding(padding)) {
+            NavHost(
+                navController = navController,
+                startDestination = BottomNavScreen.Quiz.route
+            ) {
+                composable(BottomNavScreen.Quiz.route) {
+                    QuizHomeScreen(quizViewModel)
                 }
-            } else {
-                Button(onClick = { viewModel.fetchPlants() }) {
-                    Text("Fetch Plants")
+                composable(BottomNavScreen.List.route) {
+                    HomeListScreen(listsViewModel)
                 }
             }
         }

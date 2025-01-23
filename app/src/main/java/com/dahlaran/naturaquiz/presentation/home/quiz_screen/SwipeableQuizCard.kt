@@ -1,4 +1,5 @@
 package com.dahlaran.naturaquiz.presentation.home.quiz_screen
+
 import QuizContent
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.fillMaxSize

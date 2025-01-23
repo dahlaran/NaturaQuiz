@@ -38,7 +38,8 @@ fun SwipeableQuizScreen(
     val coroutineScope = rememberCoroutineScope()
     var isFirstCardOnTop by remember { mutableStateOf(true) }
     var isAnswerCorrect by remember { mutableStateOf<Boolean?>(null) }
-
+    var currentQuizRemember by remember { mutableStateOf(currentQuiz) }
+    currentQuizRemember = currentQuiz
     // Animation states for both cards, reduce the second card's scale to 0.9f to make it smaller (its better)
     val firstCardState = rememberSwipeAnimationState(initialScale = 1f)
     val secondCardState = rememberSwipeAnimationState(initialScale = 0.9f)
@@ -54,8 +55,8 @@ fun SwipeableQuizScreen(
             val bottomCardState = if (isFirstCardOnTop) secondCardState else firstCardState
 
             isAnswerCorrect = when (direction) {
-                SwipeDirection.LEFT -> currentQuiz.leftIsGoodAnswer
-                SwipeDirection.RIGHT -> !currentQuiz.leftIsGoodAnswer
+                SwipeDirection.LEFT -> currentQuizRemember.leftIsGoodAnswer
+                SwipeDirection.RIGHT -> !currentQuizRemember.leftIsGoodAnswer
             }
 
             // Animate top card away

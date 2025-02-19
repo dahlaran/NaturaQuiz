@@ -8,14 +8,20 @@ import com.dahlaran.naturaquiz.domain.entities.Plant
 import com.dahlaran.naturaquiz.domain.entities.Quiz
 import javax.inject.Inject
 
+
+/**
+ * UseCase to get the quiz response
+ * It generates a list of 2 quiz based on the list of plants and the previous quiz
+ * If there is less than 2 quiz that is generated, there is a problem and an new list of plants are needed
+ */
 class GetQuizResponseUseCase @Inject constructor() {
 
     operator fun invoke(
         plants: List<Plant>?,
         displayedQuiz: Quiz?,
-    ): DataState<List<Quiz>> {
+    ): List<Quiz> {
         if (plants == null) {
-            return DataState.Error(RepoError(ErrorCode.CODE_NOT_DISPLAY))
+            return mutableListOf()
         }
         val generatedQuiz = mutableListOf<Quiz>()
 
@@ -25,10 +31,10 @@ class GetQuizResponseUseCase @Inject constructor() {
             val newQuiz = generateQuiz(plants, displayed)
             newQuiz?.let { new ->
                 generatedQuiz.add(new)
-            } ?: return DataState.Error(RepoError(ErrorCode.CODE_NOT_DISPLAY))
-        } ?: return DataState.Error(RepoError(ErrorCode.CODE_NOT_DISPLAY))
+            }
+        }
 
-        return DataState.Success(generatedQuiz)
+        return generatedQuiz
     }
 
     private fun generateQuiz(plants: List<Plant>, quiz: Quiz?): Quiz? {

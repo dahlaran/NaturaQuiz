@@ -75,18 +75,18 @@ class QuizViewModel @Inject constructor(
 
     private fun createQuizResponse(plants: List<Plant>?) {
         getPlantResponseUseCase.invoke(plants, _state.value.nextQuiz).let { getPlantResponse ->
-            if (getPlantResponse is DataState.Error) {
-                fetchPlants()
-            } else if (getPlantResponse is DataState.Success) {
                 _state.update {
                     it.copy(
                         plants = plants,
-                        quiz = getPlantResponse.data.first(),
-                        nextQuiz = getPlantResponse.data.getOrNull(1),
+                        quiz = getPlantResponse.firstOrNull(),
+                        nextQuiz = getPlantResponse.getOrNull(1),
                         isLoading = false,
                         error = null
                     )
                 }
+            if (getPlantResponse.size < 2) {
+                fetchPlants()
+            } else {
                 sendEvent(Event.NavigateToHomeScreen)
             }
         }

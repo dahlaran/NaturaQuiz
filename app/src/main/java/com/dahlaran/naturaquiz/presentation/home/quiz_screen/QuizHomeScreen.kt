@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,10 +17,13 @@ import com.dahlaran.naturaquiz.presentation.viewmodel.QuizViewModel
 fun QuizHomeScreen(viewModel: QuizViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    state.quiz?.let {
+    val quiz = state.quiz
+    val nextQuiz = state.nextQuiz
+
+    if (quiz != null && nextQuiz != null) {
         SwipeableQuizScreen(
-            currentQuiz = it,
-            nextQuiz = state.nextQuiz!!,
+            currentQuiz = quiz,
+            nextQuiz = nextQuiz,
             streak = state.streak,
             onSwipeLeft = {
                 viewModel.handleAnswer(isLeft = true)
@@ -28,7 +32,7 @@ fun QuizHomeScreen(viewModel: QuizViewModel) {
                 viewModel.handleAnswer(isLeft = false)
             }
         )
-    } ?: run {
+    } else {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -36,13 +40,9 @@ fun QuizHomeScreen(viewModel: QuizViewModel) {
             contentAlignment = Alignment.Center
         ) {
             if (state.isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                ) {
-                    Text("Loading...")
-                }
+                Text("Loading...",
+                    style = MaterialTheme.typography.bodyLarge,
+                    )
             } else {
                 Button(onClick = { viewModel.fetchPlants() }) {
                     Text("Fetch Plants")

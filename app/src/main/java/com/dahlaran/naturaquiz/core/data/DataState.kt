@@ -8,14 +8,15 @@ sealed class DataState<out T> {
     /**
      * Success state
      *
-     * @param data the data that was loaded
+     * @param data : The data that was loaded
      */
     data class Success<out T>(val data: T) : DataState<T>()
 
     /**
      * Error state
      *
-     * @param repoError the error that occurred
+     * @param error : The error that occurred
+     * @param message : The error message
      */
-    data class Error(val repoError: RepoError) : DataState<Nothing>()
+    data class Error(val error: AppError, val message: String? = null) : DataState<Nothing>()
 }

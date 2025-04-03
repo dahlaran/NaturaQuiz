@@ -1,7 +1,5 @@
 package com.dahlaran.naturaquiz.presentation.viewmodel
 
-import androidx.lifecycle.viewModelScope
-import com.dahlaran.naturaquiz.core.bus.Event
 import com.dahlaran.naturaquiz.core.data.BaseViewModel
 import com.dahlaran.naturaquiz.core.data.DataState
 import com.dahlaran.naturaquiz.domain.entities.Plant
@@ -11,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -28,20 +25,29 @@ class QuizViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     /**
+     * Handle events from the view
+     *
+     * @param event : QuizViewEvent to handle
+     */
+    fun onEvent(event: QuizViewEvent) {
+        when (event) {
+            is QuizViewEvent.OnArriveOnQuizScreen -> fetchPlants()
+            is QuizViewEvent.Refresh -> fetchPlants()
+            is QuizViewEvent.OnArriveOnSplash -> fetchPlants()
+            is QuizViewEvent.HandelAnswer -> handleAnswer(event.isLeft)
+        }
+    }
+
+    /**
      * Fetch plants from the API and store them in the state
      */
-    fun fetchPlants() {
+    private fun fetchPlants() {
         _state.update { it.copy(isLoading = true) }
-        viewModelScope.launch {
-            launchUsesCase(getPlantsUseCase.invoke(), onSuccess = { plants ->
-                Timber.e("Plants fetched : $plants")
+            launchUseCase({getPlantsUseCase.invoke()}, onSuccess = { plants ->
                 createQuizResponse(plants)
             }, onError = { error ->
-                Timber.e("error : $error")
-
                 _state.update { it.copy(isLoading = false, error = error) }
             })
-        }
     }
 
     /**
@@ -49,7 +55,7 @@ class QuizViewModel @Inject constructor(
      *
      * @param isLeft : Boolean to know if the user clicked/dragged on the left button
      */
-    fun handleAnswer(isLeft: Boolean) {
+    private fun handleAnswer(isLeft: Boolean) {
         // Check if the answer is correct
         val isCorrect = state.value.quiz?.let { quiz ->
             if (isLeft) quiz.leftIsGoodAnswer else !quiz.leftIsGoodAnswer
@@ -68,26 +74,25 @@ class QuizViewModel @Inject constructor(
     private fun nextPlant() {
         if (_state.value.isLoading) return
         _state.update { it.copy(isLoading = true) }
-        viewModelScope.launch {
-            createQuizResponse(_state.value.plants)
-        }
+        createQuizResponse(_state.value.plants)
     }
 
     private fun createQuizResponse(plants: List<Plant>?) {
         getPlantResponseUseCase.invoke(plants, _state.value.nextQuiz).let { getPlantResponse ->
+            if (getPlantResponse is DataState.Error) {
+                fetchPlants()
+            } else if  (getPlantResponse is DataState.Success && getPlantResponse.data.size >= 2) {
                 _state.update {
                     it.copy(
                         plants = plants,
-                        quiz = getPlantResponse.firstOrNull(),
-                        nextQuiz = getPlantResponse.getOrNull(1),
+                        quiz = getPlantResponse.data.firstOrNull(),
+                        nextQuiz = getPlantResponse.data.getOrNull(1),
                         isLoading = false,
                         error = null
                     )
                 }
-            if (getPlantResponse.size < 2) {
-                fetchPlants()
             } else {
-                sendEvent(Event.NavigateToHomeScreen)
+                fetchPlants()
             }
         }
     }

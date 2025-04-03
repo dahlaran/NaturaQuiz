@@ -2,18 +2,17 @@
     <string name="app_name">NaturaQuiz</string>
 
 
-    <!-- Errors -->
-    <string name="error_default">An Error Occurred</string>
-    <string name="error_no_network">No Network</string>
-    <string name="error_http_exception">Http Exception</string>
-    <string name="error_success">Success !</string>
-    <string name="error_no_content">Any content</string>
-    <string name="error_bad_request">Bad request</string>
-    <string name="error_unauthorized">Unauthorized</string>
-    <string name="error_forbidden">No Network</string>
-    <string name="error_payment_required">Need Payment</string>
-    <string name="error_no_found">No Found</string>
-    <string name="error_time_out">Time out</string>
-    <string name="no_video_is_available_at_the_moment">No video is available at the moment</string>
-    <string name="back">Return to previous page</string>
+    <!-- Error Messages -->
+    <string name="error_network">Network connection problem. Please check your connection.</string>
+    <string name="error_no_internet">No internet connection. Please check your settings.</string>
+    <string name="error_timeout">The request timed out. Please try again.</string>
+    <string name="error_not_found">The requested resource was not found.</string>
+    <string name="error_unauthorized">You are not authorized to access this resource.</string>
+    <string name="error_server">A server error occurred. Please try again later.</string>
+    <string name="error_api">API error: %1$s</string>
+    <string name="error_resource_not_found">The requested %1$s was not found.</string>
+    <string name="error_validation">Invalid %1$s: %2$s</string>
+    <string name="error_database">A database error occurred. Please try again.</string>
+    <string name="error_unexpected">An unexpected error occurred. Please try again.</string>
+    <string name="error_empty_result">No results found. Please try another search.</string>
 </resources>

@@ -1,8 +1,6 @@
 package com.dahlaran.naturaquiz.presentation.viewmodel
 
 import com.dahlaran.naturaquiz.core.data.DataState
-import com.dahlaran.naturaquiz.core.data.ErrorCode
-import com.dahlaran.naturaquiz.core.data.RepoError
 import com.dahlaran.naturaquiz.domain.entities.Plant
 import com.dahlaran.naturaquiz.domain.entities.Quiz
 import com.dahlaran.naturaquiz.domain.usecases.GetPlantsUseCase

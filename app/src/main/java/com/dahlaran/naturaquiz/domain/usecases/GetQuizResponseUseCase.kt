@@ -1,8 +1,7 @@
 package com.dahlaran.naturaquiz.domain.usecases
 
+import com.dahlaran.naturaquiz.core.data.AppError
 import com.dahlaran.naturaquiz.core.data.DataState
-import com.dahlaran.naturaquiz.core.data.ErrorCode
-import com.dahlaran.naturaquiz.core.data.RepoError
 import com.dahlaran.naturaquiz.core.extensions.firstOrNullFromIndex
 import com.dahlaran.naturaquiz.domain.entities.Plant
 import com.dahlaran.naturaquiz.domain.entities.Quiz
@@ -19,9 +18,9 @@ class GetQuizResponseUseCase @Inject constructor() {
     operator fun invoke(
         plants: List<Plant>?,
         displayedQuiz: Quiz?,
-    ): List<Quiz> {
+    ): DataState<List<Quiz>> {
         if (plants == null) {
-            return mutableListOf()
+            return DataState.Error(AppError.EmptyResultError)
         }
         val generatedQuiz = mutableListOf<Quiz>()
 
@@ -31,10 +30,10 @@ class GetQuizResponseUseCase @Inject constructor() {
             val newQuiz = generateQuiz(plants, displayed)
             newQuiz?.let { new ->
                 generatedQuiz.add(new)
-            }
-        }
+            } ?: return DataState.Error(AppError.EmptyResultError)
+        } ?: return DataState.Error(AppError.EmptyResultError)
 
-        return generatedQuiz
+        return DataState.Success(generatedQuiz)
     }
 
     private fun generateQuiz(plants: List<Plant>, quiz: Quiz?): Quiz? {

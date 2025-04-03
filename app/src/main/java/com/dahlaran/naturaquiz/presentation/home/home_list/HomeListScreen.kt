@@ -10,9 +10,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.dahlaran.naturaquiz.presentation.home.home_list.layouts.HomeListErrorLayout
+import com.dahlaran.naturaquiz.core.data.AppError
+import com.dahlaran.naturaquiz.core.presentation.view.ErrorView
 import com.dahlaran.naturaquiz.presentation.home.home_list.plant_detail.PlantDetailScreen
 import com.dahlaran.naturaquiz.presentation.home.home_list.specie_detail.SpecieDetailScreen
+import com.dahlaran.naturaquiz.presentation.viewmodel.ListsViewEvent
 import com.dahlaran.naturaquiz.presentation.viewmodel.ListsViewModel
 
 
@@ -38,7 +40,7 @@ fun HomeListScreen(listsViewModel: ListsViewModel) {
                     onSpecieSelected = { specie ->
                         navController.navigate("detail/specie/${specie.id}")
                     },
-                    onRefresh = { listsViewModel.fetchLists() }
+                    onRefresh = { listsViewModel.onEvent(ListsViewEvent.Refresh) },
                 )
             }
 
@@ -77,10 +79,9 @@ fun HomeListScreen(listsViewModel: ListsViewModel) {
             }
 
             composable("error") {
-                HomeListErrorLayout(
-                    error = state.error!!,
-                    onRetry = { listsViewModel.fetchLists() }
-                )
+                ErrorView(error = state.error?: AppError.UnexpectedError(), onRetry = {
+                    listsViewModel.onEvent(ListsViewEvent.Refresh)
+                })
             }
         }
     }

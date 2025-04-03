@@ -28,9 +28,23 @@ class QuizViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     /**
+     * Handle events from the view
+     *
+     * @param event : QuizViewEvent to handle
+     */
+    fun onEvent(event: QuizViewEvent) {
+        when (event) {
+            is QuizViewEvent.OnArriveOnQuizScreen -> sendEvent(Event.NavigateToHomeScreen)
+            is QuizViewEvent.Refresh -> fetchPlants()
+            is QuizViewEvent.OnArriveOnSplash -> fetchPlants()
+            is QuizViewEvent.HandelAnswer -> handleAnswer(event.isLeft)
+        }
+    }
+
+    /**
      * Fetch plants from the API and store them in the state
      */
-    fun fetchPlants() {
+    private fun fetchPlants() {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             launchUsesCase(getPlantsUseCase.invoke(), onSuccess = { plants ->
@@ -49,7 +63,7 @@ class QuizViewModel @Inject constructor(
      *
      * @param isLeft : Boolean to know if the user clicked/dragged on the left button
      */
-    fun handleAnswer(isLeft: Boolean) {
+    private fun handleAnswer(isLeft: Boolean) {
         // Check if the answer is correct
         val isCorrect = state.value.quiz?.let { quiz ->
             if (isLeft) quiz.leftIsGoodAnswer else !quiz.leftIsGoodAnswer

@@ -21,7 +21,21 @@ class ListsViewModel @Inject constructor(
     private val _state = MutableStateFlow(ListsHomeState())
     val state = _state.asStateFlow()
 
-    fun fetchLists() {
+    fun onEvent(event: ListsViewEvent) {
+        when (event) {
+            is ListsViewEvent.OnArriveOnList -> {
+                fetchLists()
+            }
+            is ListsViewEvent.OnArriveOnSplash -> {
+                fetchLists()
+            }
+            is ListsViewEvent.Refresh -> {
+                fetchLists()
+            }
+        }
+    }
+
+    private fun fetchLists() {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             launchUsesCase(getListsHomeUseCase.invoke(), onSuccess = { lists ->

@@ -18,7 +18,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.dahlaran.naturaquiz.core.bus.Event
 import com.dahlaran.naturaquiz.core.bus.EventBus
+import com.dahlaran.naturaquiz.presentation.viewmodel.ListsViewEvent
 import com.dahlaran.naturaquiz.presentation.viewmodel.ListsViewModel
+import com.dahlaran.naturaquiz.presentation.viewmodel.QuizViewEvent
 import com.dahlaran.naturaquiz.presentation.viewmodel.QuizViewModel
 
 /**
@@ -31,8 +33,8 @@ fun SplashScreen(
     navController: NavHostController
 ) {
     LaunchedEffect(Unit) {
-        quizViewModel.fetchPlants()
-        listsViewModel.fetchLists()
+        quizViewModel.onEvent(QuizViewEvent.OnArriveOnSplash)
+        listsViewModel.onEvent(ListsViewEvent.OnArriveOnSplash)
     }
 
     val context = LocalContext.current
@@ -64,7 +66,7 @@ fun SplashScreen(
         ) {
             quizViewModel.state.value.error?.let {
                 // Display an error
-                Button(onClick = { quizViewModel.fetchPlants() }) {
+                Button(onClick = { quizViewModel.onEvent(QuizViewEvent.Refresh) }) {
                     Text("Retry")
                 }
             } ?: run {

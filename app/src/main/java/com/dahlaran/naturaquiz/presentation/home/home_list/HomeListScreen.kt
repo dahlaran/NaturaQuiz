@@ -13,6 +13,7 @@ import androidx.navigation.navArgument
 import com.dahlaran.naturaquiz.presentation.home.home_list.layouts.HomeListErrorLayout
 import com.dahlaran.naturaquiz.presentation.home.home_list.plant_detail.PlantDetailScreen
 import com.dahlaran.naturaquiz.presentation.home.home_list.specie_detail.SpecieDetailScreen
+import com.dahlaran.naturaquiz.presentation.viewmodel.ListsViewEvent
 import com.dahlaran.naturaquiz.presentation.viewmodel.ListsViewModel
 
 
@@ -38,7 +39,7 @@ fun HomeListScreen(listsViewModel: ListsViewModel) {
                     onSpecieSelected = { specie ->
                         navController.navigate("detail/specie/${specie.id}")
                     },
-                    onRefresh = { listsViewModel.fetchLists() }
+                    onRefresh = { listsViewModel.onEvent(ListsViewEvent.Refresh) },
                 )
             }
 
@@ -79,7 +80,7 @@ fun HomeListScreen(listsViewModel: ListsViewModel) {
             composable("error") {
                 HomeListErrorLayout(
                     error = state.error!!,
-                    onRetry = { listsViewModel.fetchLists() }
+                    onRetry = { listsViewModel.onEvent(ListsViewEvent.Refresh) },
                 )
             }
         }

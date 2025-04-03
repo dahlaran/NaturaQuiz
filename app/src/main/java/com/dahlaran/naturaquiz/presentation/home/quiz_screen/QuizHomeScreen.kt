@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.dahlaran.naturaquiz.presentation.viewmodel.QuizViewEvent
 import com.dahlaran.naturaquiz.presentation.viewmodel.QuizViewModel
 
 @Composable
@@ -26,10 +27,10 @@ fun QuizHomeScreen(viewModel: QuizViewModel) {
             nextQuiz = nextQuiz,
             streak = state.streak,
             onSwipeLeft = {
-                viewModel.handleAnswer(isLeft = true)
+                viewModel.onEvent(QuizViewEvent.HandelAnswer(isLeft = true))
             },
             onSwipeRight = {
-                viewModel.handleAnswer(isLeft = false)
+                viewModel.onEvent(QuizViewEvent.HandelAnswer(isLeft = false))
             }
         )
     } else {
@@ -44,7 +45,7 @@ fun QuizHomeScreen(viewModel: QuizViewModel) {
                     style = MaterialTheme.typography.bodyLarge,
                     )
             } else {
-                Button(onClick = { viewModel.fetchPlants() }) {
+                Button(onClick = { viewModel.onEvent(QuizViewEvent.Refresh) }) {
                     Text("Fetch Plants")
                 }
             }

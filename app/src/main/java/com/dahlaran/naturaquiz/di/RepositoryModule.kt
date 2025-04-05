@@ -1,5 +1,6 @@
 package com.dahlaran.naturaquiz.di
 
+import com.dahlaran.naturaquiz.core.network.NetworkChecker
 import com.dahlaran.naturaquiz.data.PlantRepositoryImpl
 import com.dahlaran.naturaquiz.data.PlantService
 import com.dahlaran.naturaquiz.domain.PlantRepository
@@ -15,7 +16,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providePlantRepository(plantService: PlantService): PlantRepository {
-        return PlantRepositoryImpl(plantService)
+    fun providePlantRepository(plantService: PlantService, networkChecker: NetworkChecker): PlantRepository {
+        return PlantRepositoryImpl(plantService, networkChecker)
     }
 }

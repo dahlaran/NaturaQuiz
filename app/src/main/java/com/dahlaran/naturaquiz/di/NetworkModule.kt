@@ -1,11 +1,14 @@
 package com.dahlaran.naturaquiz.di
 
+import android.content.Context
 import com.dahlaran.naturaquiz.BuildConfig
 import com.dahlaran.naturaquiz.core.network.AuthInterceptor
+import com.dahlaran.naturaquiz.core.network.NetworkChecker
 import com.dahlaran.naturaquiz.data.PlantService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -46,5 +49,10 @@ object NetworkModule {
     @Singleton
     fun providePlantService(retrofit: Retrofit): PlantService {
         return retrofit.create(PlantService::class.java)
+    }
+
+    @Provides
+    fun provideNetworkChecker(@ApplicationContext context: Context): NetworkChecker {
+        return NetworkChecker(context)
     }
 }

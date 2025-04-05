@@ -81,16 +81,18 @@ class QuizViewModel @Inject constructor(
         getPlantResponseUseCase.invoke(plants, _state.value.nextQuiz).let { getPlantResponse ->
             if (getPlantResponse is DataState.Error) {
                 fetchPlants()
-            } else if (getPlantResponse is DataState.Success) {
+            } else if  (getPlantResponse is DataState.Success && getPlantResponse.data.size >= 2) {
                 _state.update {
                     it.copy(
                         plants = plants,
-                        quiz = getPlantResponse.data.first(),
+                        quiz = getPlantResponse.data.firstOrNull(),
                         nextQuiz = getPlantResponse.data.getOrNull(1),
                         isLoading = false,
                         error = null
                     )
                 }
+            } else {
+                fetchPlants()
             }
         }
     }

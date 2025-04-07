@@ -23,38 +23,30 @@ class GetQuizResponseUseCaseTest {
 
     @Test
     fun `invoke with valid plants should return success with two quizzes`() {
-        // When
         val result = useCase.invoke(testPlants, null)
 
-        // Then
         assertTrue(result is DataState.Success)
         assertEquals(2, (result as DataState.Success).data.size)
     }
 
     @Test
     fun `invoke with empty plants should return error`() {
-        // When
         val result = useCase.invoke(emptyList(), null)
 
-        // Then
         assertTrue(result is DataState.Error)
     }
 
     @Test
     fun `invoke with null plants should return error`() {
-        // When
         val result = useCase.invoke(null, null)
 
-        // Then
         assertTrue(result is DataState.Error)
     }
 
     @Test
     fun `generated quizzes should have different plants`() {
-        // When
         val result = useCase.invoke(testPlants, null)
 
-        // Then
         assertTrue(result is DataState.Success)
         val quizzes = (result as DataState.Success).data
         val quiz1 = quizzes[0]

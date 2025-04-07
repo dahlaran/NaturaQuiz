@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dahlaran.naturaquiz.core.data.AppError
 import com.dahlaran.naturaquiz.core.presentation.view.ErrorView
@@ -21,7 +22,7 @@ fun QuizHomeScreen(viewModel: QuizViewModel) {
         when {
             state.isLoading -> {
                 CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center).testTag("loading_indicator")
                 )
             }
 

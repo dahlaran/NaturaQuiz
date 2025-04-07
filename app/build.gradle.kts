@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     kotlin("kapt")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ksp)
 }
@@ -57,6 +57,13 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "META-INF/gradle/incremental.annotation.processors"
+
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/NOTICE.md"
+            excludes += "META-INF/ASL2.0"
+            excludes += "META-INF/LICENSE"
+            excludes += "META-INF/NOTICE"
         }
     }
 
@@ -122,8 +129,11 @@ dependencies {
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.hilt.android.testing)
 
     // Android Testing
     androidTestImplementation(libs.androidx.test.ext.junit)
@@ -134,4 +144,18 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
     testImplementation(libs.junit)
+
+    // Espresso
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.espresso.contrib)
+    androidTestImplementation(libs.androidx.test.espresso.intents)
+
+    // Android Testing
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.compose.ui.test)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4.android)
+
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
 }

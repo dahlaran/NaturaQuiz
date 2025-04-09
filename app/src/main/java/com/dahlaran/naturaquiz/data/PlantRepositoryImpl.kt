@@ -7,50 +7,42 @@ import com.dahlaran.naturaquiz.core.network.NetworkChecker
 import com.dahlaran.naturaquiz.domain.PlantRepository
 import com.dahlaran.naturaquiz.domain.entities.ListsHome
 import com.dahlaran.naturaquiz.domain.entities.Plant
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PlantRepositoryImpl @Inject constructor(private val plantService: PlantService, private val networkChecker: NetworkChecker) :
-    PlantRepository {
+class PlantRepositoryImpl @Inject constructor(
+    private val plantService: PlantService,
+    private val networkChecker: NetworkChecker
+) : PlantRepository {
     companion object {
         const val PAGE_SIZE = 20
     }
 
     override var plantNumber = 0
-    override suspend fun getPlantsCount(): DataState<Int> {
-        return try {
-            if (plantNumber == 0) {
-                // Check for internet connection first
-                if (!networkChecker.isConnected()) {
-                    DataState.Error(AppError.NoInternetConnection)
-                }
-                val response = plantService.getPlantsCount()
-                if (response.isSuccessful) {
-                    plantNumber = response.body()?.count ?: 0
-                    if (plantNumber == 0) {
-                        DataState.Error(AppError.EmptyResultError)
-                    } else {
-                        DataState.Success(plantNumber)
-                    }
-                }
-                DataState.Error(ErrorMapper.mapResponseToAppError(response))
-            }
-            DataState.Success(plantNumber)
-        } catch (e: Exception) {
-            DataState.Error(ErrorMapper.mapThrowableToAppError(e))
-        }
-    }
 
-    override suspend fun getPlants(): DataState<List<Plant>> {
-        return try {
+    override fun getPlants(): Flow<DataState<List<Plant>>> = flow {
+        try {
             // Check for internet connection first
             if (!networkChecker.isConnected()) {
-                return DataState.Error(AppError.NoInternetConnection)
+                emit(DataState.Error(AppError.NoInternetConnection))
+                return@flow
+            }
+
+            // If the plant number is not set, get it from the server
+            if (plantNumber == 0) {
+                val plantsCountResponse = plantService.getPlantsCount()
+                plantNumber = plantsCountResponse.body()?.count ?: 0
+                if (plantNumber == 0) {
+                    emit(DataState.Error(AppError.EmptyResultError))
+                    return@flow
+                }
             }
 
             val randomPage = (1..plantNumber / PAGE_SIZE).random()
@@ -59,41 +51,51 @@ class PlantRepositoryImpl @Inject constructor(private val plantService: PlantSer
             if (response.isSuccessful) {
                 val plants = response.body()?.data ?: emptyList()
                 if (plants.isEmpty()) {
-                    DataState.Error(AppError.EmptyResultError)
+                    emit(DataState.Error(AppError.EmptyResultError))
                 } else {
-                    DataState.Success(plants)
+                    emit(DataState.Success(plants))
                 }
             } else {
-                DataState.Error(ErrorMapper.mapResponseToAppError(response))
+                emit(DataState.Error(ErrorMapper.mapResponseToAppError(response)))
             }
         } catch (e: Exception) {
-            DataState.Error(ErrorMapper.mapThrowableToAppError(e))
+            emit(DataState.Error(ErrorMapper.mapThrowableToAppError(e)))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun getListsHome(): DataState<ListsHome> = coroutineScope {
+    override fun getListsHome(): Flow<DataState<ListsHome>> = flow {
         try {
-            val plantsResponseAsync = async { plantService.getPlants(2) }
-            val speciesResponseAsync = async { plantService.getSpecies() }
+            if (!networkChecker.isConnected()) {
+                emit(DataState.Error(AppError.NoInternetConnection))
+                return@flow
+            }
 
-            awaitAll(plantsResponseAsync, speciesResponseAsync)
-            val plantsResponse = plantsResponseAsync.getCompleted()
-            val speciesResponse = speciesResponseAsync.getCompleted()
+            // Parallel network requests
+            val results = coroutineScope {
+                val plantsDeferred = async { plantService.getPlants(2) }
+                val speciesDeferred = async { plantService.getSpecies() }
+
+                Pair(plantsDeferred.await(), speciesDeferred.await())
+            }
+
+            val (plantsResponse, speciesResponse) = results
 
             if (plantsResponse.isSuccessful && speciesResponse.isSuccessful) {
-                DataState.Success(
-                    ListsHome(
-                        plantsResponse.body()?.data ?: emptyList(),
-                        speciesResponse.body()?.data ?: emptyList()
-                    )
-                )
+                val plants = plantsResponse.body()?.data ?: emptyList()
+                val species = speciesResponse.body()?.data ?: emptyList()
+
+                val listsHome = ListsHome(plants, species)
+                emit(DataState.Success(listsHome))
             } else {
-                DataState.Error(ErrorMapper.mapResponseToAppError(if (!plantsResponse.isSuccessful) plantsResponse else speciesResponse))
+                val error = if (!plantsResponse.isSuccessful) {
+                    ErrorMapper.mapResponseToAppError(plantsResponse)
+                } else {
+                    ErrorMapper.mapResponseToAppError(speciesResponse)
+                }
+                emit(DataState.Error(error))
             }
         } catch (e: Exception) {
-            DataState.Error(ErrorMapper.mapThrowableToAppError(e))
+            emit(DataState.Error(ErrorMapper.mapThrowableToAppError(e)))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 }

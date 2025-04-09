@@ -3,6 +3,7 @@ package com.dahlaran.naturaquiz.domain
 import com.dahlaran.naturaquiz.core.data.DataState
 import com.dahlaran.naturaquiz.domain.entities.ListsHome
 import com.dahlaran.naturaquiz.domain.entities.Plant
+import kotlinx.coroutines.flow.Flow
 
 /**
  * PlantRepository is an interface that can be used to handle the state of a Plant
@@ -16,17 +17,12 @@ interface PlantRepository {
     var plantNumber: Int
 
     /**
-     * Fetch plants number from the API to set the plantNumber
-     */
-    suspend fun getPlantsCount(): DataState<Int>
-
-    /**
      * Fetch plants from the API
      */
-    suspend fun getPlants(): DataState<List<Plant>>
+    fun getPlants(): Flow<DataState<List<Plant>>>
 
     /**
      * Fetch list from the API
      */
-    suspend fun getListsHome(): DataState<ListsHome>
+    fun getListsHome(): Flow<DataState<ListsHome>>
 }

@@ -21,14 +21,8 @@ class ListsViewModel @Inject constructor(
 
     fun onEvent(event: ListsViewEvent) {
         when (event) {
-            is ListsViewEvent.OnArriveOnList -> {
-                fetchLists()
-            }
-
-            is ListsViewEvent.OnArriveOnSplash -> {
-                fetchLists()
-            }
-
+            is ListsViewEvent.OnArriveOnList,
+            is ListsViewEvent.OnArriveOnSplash,
             is ListsViewEvent.Refresh -> {
                 fetchLists()
             }

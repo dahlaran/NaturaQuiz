@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,7 +45,9 @@ fun SwipeableQuizScreen(
     val firstCardState = rememberSwipeAnimationState(initialScale = 1f)
     val secondCardState = rememberSwipeAnimationState(initialScale = 0.9f)
 
-    val swipeThreshold = with(density) { SwipeAnimationSpecs.SWIPE_THRESHOLD_DP.dp.toPx() }
+    val swipeThreshold = remember {
+        with(density) { SwipeAnimationSpecs.SWIPE_THRESHOLD_DP.dp.toPx() }
+    }
 
     fun animateSwipe(direction: SwipeDirection) {
         coroutineScope.launch {

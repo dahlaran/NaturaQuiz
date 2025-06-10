@@ -1,56 +1,60 @@
 [versions]
 accompanist-swiperefresh = "0.24.2-alpha"
-agp = "8.9.1"
+agp = "8.9.3"
 android-joda = "2.10.9"
 coil-compose = "2.6.0"
 converter-gson = "2.9.0"
-hilt-android = "2.49"
+core-splashscreen = "1.0.1"
+hilt-android = "2.56.2"
 hilt-navigation-compose = "1.2.0"
-kotlin = "1.9.22"
-ksp = "1.9.22-1.0.17"
-core-ktx = "1.13.0"
+kotlin = "2.1.21"
+ksp = "2.1.21-2.0.1"
+core-ktx = "1.16.0"
 junit = "4.13.2"
-androidx-test-ext-junit = "1.1.5"
-appcompat = "1.7.0"
+androidx-test-ext-junit = "1.2.1"
+appcompat = "1.7.1"
 kotlinx-serialization-json = "1.7.3"
-lifecycle-viewmodel-compose = "2.8.7"
+lifecycle-viewmodel-compose = "2.9.1"
 logging-interceptor = "5.0.0-alpha.3"
 material = "1.12.0"
 constraintlayout = "2.2.1"
-lifecycle-livedata-ktx = "2.8.7"
-lifecycle-viewmodel-ktx = "2.8.7"
-material3 = "1.3.1"
-navigation-compose = "2.8.3"
-navigation-fragment-ktx = "2.8.3"
-navigation-ui-ktx = "2.8.3"
-lifecycle-runtime-ktx = "2.8.7"
-activity-compose = "1.9.3"
-compose-bom = "2024.10.01"
+lifecycle-livedata-ktx = "2.9.1"
+lifecycle-viewmodel-ktx = "2.9.1"
+material3 = "1.3.2"
+navigation-compose = "2.9.0"
+navigation-fragment-ktx = "2.9.0"
+navigation-ui-ktx = "2.9.0"
+lifecycle-runtime-ktx = "2.9.1"
+activity-compose = "1.10.1"
+compose-bom = "2025.06.00"
 okhttp = "4.12.0"
 retrofit = "2.9.0"
-room-ktx = "2.6.1"
-room-runtime = "2.6.1"
-room-compiler = "2.6.1"
+room-ktx = "2.7.1"
+room-runtime = "2.7.1"
+room-compiler = "2.7.1"
 timber = "5.0.1"
-runtime-livedata = "1.7.8"
+runtime-livedata = "1.8.2"
 
 # Testing versions
 mockk = "1.13.9"
-kotlinx-coroutines-test = "1.8.0"
+kotlinx-coroutines-test = "1.10.1"
 androidx-core-testing = "2.2.0"
-androidx-compose-ui-test = "1.7.8"
+androidx-compose-ui-test = "1.8.2"
 turbine = "1.0.0"
-ui-test-junit4-android = "1.7.8"
+ui-test-junit4-android = "1.8.2"
 androidx-test-core = "1.5.0"
 androidx-test-rules = "1.5.0"
 androidx-test-ext-junit-ktx = "1.2.1"
 androidx-fragment-testing = "1.7.0"
-androidx-test-espresso = "3.5.0"
+androidx-test-espresso = "3.6.1"
 hilt-android-testing = "2.49"
+navigation3-ui-android = "1.0.0-alpha03"
+lifecycle-viewmodel-navigation3-android = "1.0.0-alpha01"
 
 [libraries]
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist-swiperefresh" }
 android-joda = { module = "net.danlew:android.joda", version.ref = "android-joda" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splashscreen" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-viewmodel-compose" }
 androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
@@ -101,6 +105,8 @@ hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", vers
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso" }
 androidx-test-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "androidx-test-espresso" }
 androidx-test-espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "androidx-test-espresso" }
+androidx-navigation3-ui-android = { group = "androidx.navigation3", name = "navigation3-ui-android", version.ref = "navigation3-ui-android" }
+androidx-lifecycle-viewmodel-navigation3-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3-android", version.ref = "lifecycle-viewmodel-navigation3-android" }
 
 
 [plugins]
@@ -109,3 +115,4 @@ hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hilt-andro
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

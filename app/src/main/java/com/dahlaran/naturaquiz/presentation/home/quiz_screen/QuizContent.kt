@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -26,6 +28,9 @@ fun QuizContent(
     onLeftClick: () -> Unit,
     onRightClick: () -> Unit,
 ) {
+    val stableOnLeftClick by rememberUpdatedState(onLeftClick)
+    val stableOnRightClick by rememberUpdatedState(onRightClick)
+
     Box(
         modifier = modifier.background(
             color = MaterialTheme.colorScheme.onPrimary
@@ -48,18 +53,16 @@ fun QuizContent(
                 .padding(horizontal = 16.dp, vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Left Answer Button
             QuizButton(
-                onClick = onLeftClick,
+                onClick = stableOnLeftClick,
                 modifier = Modifier
                     .weight(1f)
                     .testTag("left_quiz_button"),
                 text = quiz.getLeftAnswerText()
             )
 
-
             QuizButton(
-                onClick = onRightClick,
+                onClick = stableOnRightClick,
                 modifier = Modifier
                     .weight(1f)
                     .testTag("right_quiz_button"),

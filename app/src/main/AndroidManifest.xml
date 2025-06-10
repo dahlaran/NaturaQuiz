@@ -16,7 +16,8 @@
         android:theme="@style/Theme.NaturaQuiz"
         android:name=".NaturaQuizApplication"
         android:networkSecurityConfig="@xml/security_network"
-        tools:targetApi="31">
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="35">
         <activity
             android:name=".MainActivity"
             android:exported="true"

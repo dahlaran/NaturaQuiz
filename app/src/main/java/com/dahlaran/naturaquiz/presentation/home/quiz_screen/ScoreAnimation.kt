@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.coroutines.delay
 
 @Composable
 fun ScoreAnimation(
@@ -34,7 +35,7 @@ fun ScoreAnimation(
     LaunchedEffect(isCorrect) {
         if (isCorrect != null) {
             animationTriggered = false
-            kotlinx.coroutines.delay(250)
+            delay(300)
             animationTriggered = true
         }
     }

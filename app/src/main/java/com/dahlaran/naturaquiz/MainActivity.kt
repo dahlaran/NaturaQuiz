@@ -5,11 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.dahlaran.naturaquiz.presentation.home.HomeScreen
+import com.dahlaran.naturaquiz.presentation.navigation.NavigationHome
 import com.dahlaran.naturaquiz.presentation.splash.SplashScreen
 import com.dahlaran.naturaquiz.presentation.viewmodel.ListsViewModel
 import com.dahlaran.naturaquiz.presentation.viewmodel.QuizViewModel
@@ -19,7 +20,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
+
+        splashScreen.setKeepOnScreenCondition { false }
+
         enableEdgeToEdge()
         setContent {
             NaturaQuizTheme {
@@ -46,7 +52,7 @@ fun Navigation() {
             )
         }
         composable("home") {
-            HomeScreen(quizViewModel = quizViewModel, listsViewModel = listsViewModel)
+            NavigationHome(quizViewModel = quizViewModel, listsViewModel = listsViewModel)
         }
     }
 }

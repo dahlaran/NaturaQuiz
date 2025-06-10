@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,13 +39,14 @@ fun SwipeableQuizScreen(
     val coroutineScope = rememberCoroutineScope()
     var isFirstCardOnTop by remember { mutableStateOf(true) }
     var isAnswerCorrect by remember { mutableStateOf<Boolean?>(null) }
-    var currentQuizRemember by remember { mutableStateOf(currentQuiz) }
-    currentQuizRemember = currentQuiz
+
     // Animation states for both cards, reduce the second card's scale to 0.9f to make it smaller (its better)
     val firstCardState = rememberSwipeAnimationState(initialScale = 1f)
     val secondCardState = rememberSwipeAnimationState(initialScale = 0.9f)
 
-    val swipeThreshold = with(density) { SwipeAnimationSpecs.SWIPE_THRESHOLD_DP.dp.toPx() }
+    val swipeThreshold = remember {
+        with(density) { SwipeAnimationSpecs.SWIPE_THRESHOLD_DP.dp.toPx() }
+    }
 
     fun animateSwipe(direction: SwipeDirection) {
         coroutineScope.launch {
@@ -55,8 +57,8 @@ fun SwipeableQuizScreen(
             val bottomCardState = if (isFirstCardOnTop) secondCardState else firstCardState
 
             isAnswerCorrect = when (direction) {
-                SwipeDirection.LEFT -> currentQuizRemember.leftIsGoodAnswer
-                SwipeDirection.RIGHT -> !currentQuizRemember.leftIsGoodAnswer
+                SwipeDirection.LEFT -> currentQuiz.leftIsGoodAnswer
+                SwipeDirection.RIGHT -> !currentQuiz.leftIsGoodAnswer
             }
 
             // Animate top card away

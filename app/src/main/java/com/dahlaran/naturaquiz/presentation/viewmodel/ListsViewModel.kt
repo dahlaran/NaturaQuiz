@@ -30,7 +30,7 @@ class ListsViewModel @Inject constructor(
     }
 
     private fun fetchLists() {
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoading = true, error = null) }
         launchUseCase({ getListsHomeUseCase.invoke() }, onSuccess = { lists ->
             _state.update {
                 it.copy(

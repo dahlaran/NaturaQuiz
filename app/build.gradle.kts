@@ -7,11 +7,12 @@ plugins {
     alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.composeCompiler)
 }
 
 android {
     namespace = "com.dahlaran.naturaquiz"
-    compileSdk = 34
+    compileSdk = 36
 
     val file = rootProject.file("local.properties")
     val properties = Properties()
@@ -19,7 +20,7 @@ android {
     defaultConfig {
         applicationId = "com.dahlaran.naturaquiz"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
         buildConfigField("String", "API_KEY", "\"${properties.getProperty("trefle.api.key")}\"")
@@ -84,6 +85,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.core.splashscreen)
 
     // Implement retrofit
     implementation(libs.retrofit)
@@ -108,6 +110,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.navigation3.ui.android)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3.android)
     kapt(libs.hilt.android.compiler)
 
     // Retrofit

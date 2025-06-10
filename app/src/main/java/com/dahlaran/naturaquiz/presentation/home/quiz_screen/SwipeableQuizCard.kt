@@ -14,6 +14,8 @@ import com.dahlaran.naturaquiz.core.presentation.animation.SwipeAnimationState
 import com.dahlaran.naturaquiz.core.presentation.animation.SwipeDirection
 import com.dahlaran.naturaquiz.domain.entities.Quiz
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
@@ -70,15 +72,21 @@ fun SwipeableQuizCard(
                         onDrag = { change, dragAmount ->
                             change.consume()
                             coroutineScope.launch {
-                                animationState.offset.snapTo(
-                                    animationState.offset.value + dragAmount
-                                )
-                                animationState.rotation.snapTo(
-                                    (animationState.offset.value.x * SwipeAnimationSpecs.ROTATION_FACTOR)
-                                        .coerceIn(
-                                            -SwipeAnimationSpecs.MAX_ROTATION,
-                                            SwipeAnimationSpecs.MAX_ROTATION
+                                awaitAll(
+                                    async {
+                                        animationState.offset.snapTo(
+                                            animationState.offset.value + dragAmount
                                         )
+                                    },
+                                    async {
+                                        animationState.rotation.snapTo(
+                                            (animationState.offset.value.x * SwipeAnimationSpecs.ROTATION_FACTOR)
+                                                .coerceIn(
+                                                    -SwipeAnimationSpecs.MAX_ROTATION,
+                                                    SwipeAnimationSpecs.MAX_ROTATION
+                                                )
+                                        )
+                                    }
                                 )
                             }
                         }

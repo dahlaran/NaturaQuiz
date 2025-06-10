@@ -41,8 +41,10 @@ class QuizViewModel @Inject constructor(
      * Fetch plants from the API and store them in the state
      */
     private fun fetchPlants() {
-        _state.update { it.copy(isLoading = true) }
-            launchUseCase({getPlantsUseCase.invoke()}, onSuccess = { plants ->
+        _state.update { it.copy(isLoading = true, error = null) }
+        launchUseCase(
+            { getPlantsUseCase.invoke() },
+            onSuccess = { plants ->
                 createQuizResponse(plants)
             }, onError = { error ->
                 _state.update { it.copy(isLoading = false, error = error) }
@@ -58,7 +60,7 @@ class QuizViewModel @Inject constructor(
         // Check if the answer is correct
         val isCorrect = state.value.quiz?.let { quiz ->
             if (isLeft) quiz.leftIsGoodAnswer else !quiz.leftIsGoodAnswer
-        } ?: false
+        } == true
 
         // TODO : Store the streak in the database to display the best score done by the user
         if (isCorrect) {
@@ -72,7 +74,7 @@ class QuizViewModel @Inject constructor(
 
     private fun nextPlant() {
         if (_state.value.isLoading) return
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoading = true, error = null) }
         createQuizResponse(_state.value.plants)
     }
 
@@ -80,7 +82,7 @@ class QuizViewModel @Inject constructor(
         getPlantResponseUseCase.invoke(plants, _state.value.nextQuiz).let { getPlantResponse ->
             if (getPlantResponse is DataState.Error) {
                 fetchPlants()
-            } else if  (getPlantResponse is DataState.Success && getPlantResponse.data.size >= 2) {
+            } else if (getPlantResponse is DataState.Success && getPlantResponse.data.size >= 2) {
                 _state.update {
                     it.copy(
                         plants = plants,

@@ -7,7 +7,6 @@ import coil.memory.MemoryCache
 import coil.request.CachePolicy
 import coil.util.DebugLogger
 import dagger.hilt.android.HiltAndroidApp
-import net.danlew.android.joda.BuildConfig
 import timber.log.Timber
 
 /**

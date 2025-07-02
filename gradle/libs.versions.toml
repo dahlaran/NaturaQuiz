@@ -35,7 +35,6 @@ room-compiler = "2.7.1"
 timber = "5.0.1"
 runtime-livedata = "1.8.2"
 
-# Testing versions
 mockk = "1.13.9"
 kotlinx-coroutines-test = "1.10.1"
 androidx-core-testing = "2.2.0"
@@ -50,6 +49,7 @@ androidx-test-espresso = "3.6.1"
 hilt-android-testing = "2.49"
 navigation3-ui-android = "1.0.0-alpha03"
 lifecycle-viewmodel-navigation3-android = "1.0.0-alpha01"
+ui-test-manifest = "1.8.3"
 
 [libraries]
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist-swiperefresh" }
@@ -62,6 +62,8 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-ktx" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-runtime" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-compiler" }
+androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "ui-test-manifest" }
+androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "ui-test-manifest" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converter-gson" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }

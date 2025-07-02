@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +24,7 @@ import com.dahlaran.naturaquiz.core.presentation.animation.SwipeDirection
 import com.dahlaran.naturaquiz.core.presentation.animation.rememberSwipeAnimationState
 import com.dahlaran.naturaquiz.domain.entities.Plant
 import com.dahlaran.naturaquiz.domain.entities.Quiz
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -39,6 +40,11 @@ fun SwipeableQuizScreen(
     val coroutineScope = rememberCoroutineScope()
     var isFirstCardOnTop by remember { mutableStateOf(true) }
     var isAnswerCorrect by remember { mutableStateOf<Boolean?>(null) }
+
+    // Remember the current quiz and swipe handlers to avoid recomposition issues
+    val currentQuizState by rememberUpdatedState(currentQuiz)
+    val onSwipeLeftState by rememberUpdatedState(onSwipeLeft)
+    val onSwipeRightState by rememberUpdatedState(onSwipeRight)
 
     // Animation states for both cards, reduce the second card's scale to 0.9f to make it smaller (its better)
     val firstCardState = rememberSwipeAnimationState(initialScale = 1f)
@@ -57,8 +63,8 @@ fun SwipeableQuizScreen(
             val bottomCardState = if (isFirstCardOnTop) secondCardState else firstCardState
 
             isAnswerCorrect = when (direction) {
-                SwipeDirection.LEFT -> currentQuiz.leftIsGoodAnswer
-                SwipeDirection.RIGHT -> !currentQuiz.leftIsGoodAnswer
+                SwipeDirection.LEFT -> currentQuizState.leftIsGoodAnswer
+                SwipeDirection.RIGHT -> !currentQuizState.leftIsGoodAnswer
             }
 
             // Animate top card away
@@ -89,11 +95,11 @@ fun SwipeableQuizScreen(
                 )
             }
 
-            kotlinx.coroutines.delay(SwipeAnimationSpecs.ANIMATION_DELAY_MS)
+            delay(SwipeAnimationSpecs.ANIMATION_DELAY_MS)
 
             when (direction) {
-                SwipeDirection.LEFT -> onSwipeLeft()
-                SwipeDirection.RIGHT -> onSwipeRight()
+                SwipeDirection.LEFT -> onSwipeLeftState()
+                SwipeDirection.RIGHT -> onSwipeRightState()
             }
 
             // Reset the off-screen card
@@ -101,6 +107,7 @@ fun SwipeableQuizScreen(
             topCardState.rotation.snapTo(0f)
             topCardState.scale.snapTo(0.9f)
 
+            // Change the on-screen card and reset the isAnswerCorrect state (remove score animation)
             isFirstCardOnTop = !isFirstCardOnTop
             isAnswerCorrect = null
         }
